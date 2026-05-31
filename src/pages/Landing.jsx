@@ -170,11 +170,12 @@ export default function Landing() {
         </h1>
         <p className="text-slate-500 text-base leading-relaxed max-w-xs mx-auto mb-8">
           Cerebra helps you manage your academic life, mental wellbeing, and
-          daily habits — all in one calm space.
+          daily habits, all in one calm space.
         </p>
         <div className="flex flex-col gap-3 max-w-xs mx-auto">
           <Link to="/signup">
-            <Button size="lg">Get started — it's free</Button>
+            <Button size="lg">Get started</Button>
+            {/* Get started — it's free */}
           </Link>
           <Link to="/login">
             <Button size="lg" variant="ghost">
