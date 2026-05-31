@@ -16,9 +16,12 @@ export function AppProvider({ children }) {
 
   const applyTheme = useCallback((theme) => {
     const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else if (theme === "light") root.classList.remove("dark");
-    else {
+    localStorage.setItem("cerebra-theme", theme);
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else if (theme === "light") {
+      root.classList.remove("dark");
+    } else {
       const prefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)"
       ).matches;
@@ -120,7 +123,8 @@ export function AppProvider({ children }) {
         profile,
         loading,
         isAuthenticated: !!session,
-        needsOnboarding: !!session && !profile,
+        needsOnboarding:
+          !!session && (!profile || !profile.onboarding_complete),
         updateProfile,
         createProfile,
         signOut,

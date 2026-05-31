@@ -263,7 +263,7 @@ function Avatar({ name, imageUrl }) {
       ),
       action: () => {
         setOpen(false);
-        navigate("/app/settings");
+        navigate("/app/settings?tab=appearance");
       },
     },
     {
@@ -315,15 +315,17 @@ function Avatar({ name, imageUrl }) {
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 top-11 w-44 bg-white rounded-2xl shadow-glow
-          border border-slate-100 overflow-hidden z-50 animate-slide-up"
+          className="absolute right-0 top-11 w-44 bg-white dark:bg-slate-800 rounded-2xl shadow-glow
+  border border-slate-100 dark:border-slate-700 overflow-hidden z-50 animate-slide-up"
         >
           {/* User info header */}
-          <div className="px-4 py-3 border-b border-slate-50">
-            <p className="text-xs font-semibold text-slate-700 truncate">
+          <div className="px-4 py-3 border-b border-slate-50 dark:border-slate-700">
+            <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">
               {name}
             </p>
-            <p className="text-[10px] text-slate-400 mt-0.5">Cerebra account</p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+              Cerebra account
+            </p>
           </div>
 
           {/* Menu items */}
@@ -333,12 +335,12 @@ function Avatar({ name, imageUrl }) {
                 key={item.label}
                 onClick={item.action}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm
-                  transition-colors duration-150 text-left
-                  ${
-                    item.danger
-                      ? "text-red-500 hover:bg-red-50"
-                      : "text-slate-600 hover:bg-primary-50 hover:text-primary-600"
-                  }`}
+          transition-colors duration-150 text-left
+          ${
+            item.danger
+              ? "text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+              : "text-slate-600 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-700 hover:text-primary-600 dark:hover:text-primary-400"
+          }`}
               >
                 {item.icon}
                 {item.label}
@@ -406,6 +408,24 @@ function IconQuiz() {
     </svg>
   );
 }
+function IconResources() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+      />
+    </svg>
+  );
+}
 function IconSupport() {
   return (
     <svg
@@ -430,7 +450,7 @@ function QuickActions() {
   const actions = [
     { to: "/app/tasks", icon: <IconTasks />, label: "Tasks" },
     { to: "/app/journal", icon: <IconJournal />, label: "Journal" },
-    { to: "/app/quiz", icon: <IconQuiz />, label: "Quiz" },
+    { to: "/app/resources", icon: <IconResources />, label: "Resources" },
     { to: "/app/counselor", icon: <IconSupport />, label: "Support" },
   ];
   return (
@@ -439,9 +459,9 @@ function QuickActions() {
         <Link
           key={a.to}
           to={a.to}
-          className="flex flex-col items-center gap-2 bg-white rounded-2xl p-3
-            border border-slate-100 shadow-card hover:shadow-glow
-            transition-all duration-200 active:scale-95 text-slate-500"
+          className="flex flex-col items-center gap-2 bg-white dark:bg-slate-800 rounded-2xl p-3
+    border border-slate-100 dark:border-slate-700 shadow-card hover:shadow-glow
+    transition-all duration-200 active:scale-95 text-slate-500 dark:text-slate-400"
         >
           {a.icon}
           <span className="text-[10px] font-medium text-slate-500">
@@ -849,7 +869,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface dark:bg-slate-900">
       <div className="px-5 pt-8 pb-4 flex items-center justify-between">
         <div>
           <h1 className="font-display text-xl font-bold text-slate-800">

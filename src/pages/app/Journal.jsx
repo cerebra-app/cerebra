@@ -210,10 +210,10 @@ function PinPad({
         </svg>
       </div>
 
-      <h2 className="font-display text-xl font-bold text-slate-800 mb-1 text-center">
+      <h2 className="font-display text-xl font-bold text-slate-800 dark:text-slate-100 mb-1 text-center">
         {displayTitle}
       </h2>
-      <p className="text-sm text-slate-400 text-center mb-8">
+      <p className="text-sm text-slate-400 dark:text-slate-500 text-center mb-8">
         {displaySubtitle}
       </p>
 
@@ -247,9 +247,9 @@ function PinPad({
           <button
             key={d}
             onClick={() => handleDigit(String(d))}
-            className="h-14 rounded-2xl bg-white border border-slate-100 shadow-card
-              font-display font-semibold text-xl text-slate-700
-              transition-all active:scale-95 active:bg-primary-50 hover:border-primary-200"
+            className="h-14 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-card
+    font-display font-semibold text-xl text-slate-700 dark:text-slate-200
+    transition-all active:scale-95 active:bg-primary-50 hover:border-primary-200"
           >
             {d}
           </button>
@@ -265,9 +265,9 @@ function PinPad({
         </button>
         <button
           onClick={handleDelete}
-          className="h-14 rounded-2xl bg-white border border-slate-100 shadow-card
-            flex items-center justify-center text-slate-500
-            transition-all active:scale-95 active:bg-primary-50 hover:border-primary-200"
+          className="h-14 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-card
+    flex items-center justify-center text-slate-500 dark:text-slate-400
+    transition-all active:scale-95 active:bg-primary-50 hover:border-primary-200"
         >
           <svg
             width="20"
@@ -313,11 +313,13 @@ function EntryCard({ entry, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left bg-white rounded-2xl border border-slate-100
-        shadow-card p-4 transition-all duration-200 hover:shadow-glow active:scale-[0.99]"
+      className="w-full text-left bg-white dark:bg-slate-800 rounded-2xl border border-slate-100
+    dark:border-slate-700 shadow-card p-4 transition-all duration-200 hover:shadow-glow active:scale-[0.99]"
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium text-slate-400">{formatted}</span>
+        <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
+          {formatted}
+        </span>
         {mood && (
           <span
             className={`flex items-center gap-1 text-xs font-medium px-2 py-0.5
@@ -328,7 +330,9 @@ function EntryCard({ entry, onClick }) {
           </span>
         )}
       </div>
-      <p className="text-sm text-slate-600 leading-relaxed">{preview}</p>
+      <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        {preview}
+      </p>
     </button>
   );
 }
@@ -366,7 +370,7 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface">
+    <div className="min-h-screen flex flex-col bg-surface dark:bg-slate-900">
       {/* Header */}
       <div className="px-5 pt-8 pb-4 flex items-center justify-between">
         <button
@@ -471,7 +475,7 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
           className="flex-1 w-full bg-transparent text-slate-700 text-sm leading-relaxed
             placeholder-slate-300 resize-none focus:outline-none min-h-[300px]"
         />
-        <p className="text-xs text-slate-300 text-right py-3">
+        <p className="text-xs text-slate-300 dark:text-slate-600 text-right py-3">
           {wordCount} word{wordCount !== 1 ? "s" : ""}
         </p>
       </div>
@@ -479,8 +483,8 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
       {/* Delete confirm */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/40 flex items-end z-50 animate-fade-in">
-          <div className="w-full max-w-md mx-auto bg-white rounded-t-3xl p-6 animate-slide-up">
-            <h3 className="font-display font-semibold text-slate-800 mb-2">
+          <div className="w-full max-w-md mx-auto bg-white dark:bg-slate-800 rounded-t-3xl p-6 animate-slide-up">
+            <h3 className="font-display font-semibold text-slate-800 dark:text-slate-100 mb-2">
               Delete this entry?
             </h3>
             <p className="text-sm text-slate-400 mb-6">
@@ -657,7 +661,7 @@ export default function Journal() {
 
   // ── List screen ──
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface dark:bg-slate-900">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -742,7 +746,7 @@ export default function Journal() {
               placeholder="Search entries..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="input pl-10 text-sm"
+              className="input pl-10 text-sm dark:bg-slate-700 dark:text-slate-100"
             />
           </div>
         )}

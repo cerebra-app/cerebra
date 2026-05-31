@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { CerebraLockup } from "../../components/ui/Logo";
-import { Button, Input } from "../../components/ui/index";
+import { Button, Input, PasswordInput } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
 export default function ResetPassword() {
@@ -44,21 +44,17 @@ export default function ResetPassword() {
           Choose a strong password for your account.
         </p>
         <form onSubmit={handle} className="flex flex-col gap-4">
-          <Input
+          <PasswordInput
             label="New password"
-            type="password"
-            placeholder="At least 8 characters"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={errors.password}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="At least 8 characters"
           />
-          <Input
-            label="Confirm password"
-            type="password"
-            placeholder="Repeat your password"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            error={errors.confirm}
+          <PasswordInput
+            label="Confirm new password"
+            value={password}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Repeat new password"
           />
           <Button size="lg" loading={loading} type="submit" className="mt-2">
             Update password

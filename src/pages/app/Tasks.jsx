@@ -162,7 +162,7 @@ function TaskForm({ onSave, onCancel, initial = {} }) {
                 ${
                   form.priority === p
                     ? "bg-primary-400 text-white"
-                    : "bg-primary-50 text-slate-500 hover:bg-primary-100"
+                    : "bg-primary-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-primary-100"
                 }`}
             >
               {PRIORITY_STYLES[p].label}
@@ -186,7 +186,7 @@ function TaskForm({ onSave, onCancel, initial = {} }) {
                 ${
                   form.category === c
                     ? "bg-primary-400 text-white"
-                    : "bg-primary-50 text-slate-500 hover:bg-primary-100"
+                    : "bg-primary-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-primary-100"
                 }`}
             >
               <span>{CATEGORY_STYLES[c].emoji}</span>
@@ -228,11 +228,11 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
   return (
     <div
-      className={`bg-white rounded-2xl border p-4 transition-all duration-200
+      className={`bg-white dark:bg-slate-800 rounded-2xl border p-4 transition-all duration-200
       ${
         task.is_completed
-          ? "border-slate-100 opacity-60"
-          : "border-slate-100 shadow-card"
+          ? "border-slate-100 dark:border-slate-700 opacity-60"
+          : "border-slate-100 dark:border-slate-700 shadow-card"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -455,7 +455,7 @@ export default function Tasks() {
   );
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface dark:bg-slate-900">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-1">
@@ -490,14 +490,14 @@ export default function Tasks() {
         {/* Stats row */}
         {tasks.length > 0 && (
           <div className="flex gap-3 mt-3">
-            <div className="flex-1 bg-white rounded-2xl border border-slate-100 p-3 text-center shadow-card">
-              <p className="font-display font-bold text-lg text-slate-700">
+            <div className="flex-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-3 text-center shadow-card">
+              <p className="font-display font-bold text-lg text-slate-700 dark:text-slate-200">
                 {activeTasks.length}
               </p>
               <p className="text-[10px] text-slate-400 font-medium">Active</p>
             </div>
-            <div className="flex-1 bg-white rounded-2xl border border-slate-100 p-3 text-center shadow-card">
-              <p className="font-display font-bold text-lg text-slate-700">
+            <div className="flex-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-3 text-center shadow-card">
+              <p className="font-display font-bold text-lg text-slate-700 dark:text-slate-200">
                 {tasks.filter((t) => t.is_completed).length}
               </p>
               <p className="text-[10px] text-slate-400 font-medium">Done</p>
@@ -517,8 +517,8 @@ export default function Tasks() {
       {/* Add / Edit form */}
       {(showForm || editingTask) && (
         <div className="px-5 mb-4">
-          <Card>
-            <h3 className="font-display font-semibold text-slate-700 text-sm mb-4">
+          <Card className="dark:bg-slate-800">
+            <h3 className="font-display font-semibold text-slate-700 dark:text-slate-200 text-sm mb-4">
               {editingTask ? "Edit task" : "New task"}
             </h3>
             <TaskForm
@@ -545,7 +545,7 @@ export default function Tasks() {
                 ${
                   filter === f
                     ? "bg-primary-400 text-white"
-                    : "bg-white text-slate-500 border border-slate-100"
+                    : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400  border border-slate-100 dark:border-slate-700"
                 }`}
             >
               {f}
@@ -574,7 +574,7 @@ export default function Tasks() {
       ${
         categoryFilter === c
           ? "bg-slate-700 text-white"
-          : "bg-white text-slate-500 border border-slate-100"
+          : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-700"
       }`}
             >
               <span
@@ -649,8 +649,8 @@ export default function Tasks() {
           filtered.map((task) => (
             <div key={task.id}>
               {deleteConfirm === task.id ? (
-                <div className="bg-red-50 rounded-2xl border border-red-100 p-4">
-                  <p className="text-sm font-medium text-red-700 mb-3">
+                <div className="bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-100 dark:border-red-900/30 p-4">
+                  <p className="text-sm font-medium text-red-700 dark:text-red-400 mb-3">
                     Delete this task?
                   </p>
                   <div className="flex gap-2">

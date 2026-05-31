@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { CerebraLockup } from "../../components/ui/Logo";
-import { Button, Input } from "../../components/ui/index";
+import { Button, Input, PasswordInput } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
 export default function Signup() {
@@ -75,9 +75,10 @@ export default function Signup() {
           username: form.username.toLowerCase(),
           display_name: form.username,
           email: form.email.toLowerCase(),
+          onboarding_complete: false,
         });
       }
-      navigate("/verify-email");
+      navigate("/onboarding");
     }
   };
 
@@ -131,18 +132,16 @@ export default function Signup() {
             error={errors.username}
             autoComplete="username"
           />
-          <Input
+          <PasswordInput
             label="Password"
-            type="password"
             placeholder="At least 8 characters"
             value={form.password}
             onChange={set("password")}
             error={errors.password}
             autoComplete="new-password"
           />
-          <Input
+          <PasswordInput
             label="Confirm password"
-            type="password"
             placeholder="Repeat your password"
             value={form.confirm}
             onChange={set("confirm")}

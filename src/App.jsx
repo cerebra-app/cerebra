@@ -25,6 +25,21 @@ const More = lazy(() => import("./pages/app/More"));
 const Settings = lazy(() => import("./pages/app/Settings"));
 const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Resources = lazy(() => import("./pages/app/Resources"));
+const Documents = lazy(() => import("./pages/app/Documents"));
+
+// function AuthGuard({ children }) {
+//   const { isAuthenticated, loading, needsOnboarding, session } = useApp();
+//   const location = useLocation();
+//   if (loading) return <PageLoader />;
+//   if (!isAuthenticated)
+//     return <Navigate to="/" state={{ from: location }} replace />;
+//   if (session && !session.user.email_confirmed_at)
+//     return <Navigate to="/verify-email" replace />;
+//   if (needsOnboarding && location.pathname !== "/onboarding")
+//     return <Navigate to="/onboarding" replace />;
+//   return children;
+// }
 
 function AuthGuard({ children }) {
   const { isAuthenticated, loading, needsOnboarding, session } = useApp();
@@ -32,8 +47,6 @@ function AuthGuard({ children }) {
   if (loading) return <PageLoader />;
   if (!isAuthenticated)
     return <Navigate to="/" state={{ from: location }} replace />;
-  if (session && !session.user.email_confirmed_at)
-    return <Navigate to="/verify-email" replace />;
   if (needsOnboarding && location.pathname !== "/onboarding")
     return <Navigate to="/onboarding" replace />;
   return children;
@@ -97,6 +110,8 @@ function AppRoutes() {
                 <Route path="journal" element={<Journal />} />
                 <Route path="more" element={<More />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="resources" element={<Resources />} />
+                <Route path="documents" element={<Documents />} />
                 <Route
                   path="timetable"
                   element={<ComingSoon feature="timetable" />}

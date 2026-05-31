@@ -12,7 +12,7 @@
     font-family: "DM Sans", sans-serif;
   }
   body {
-    @apply bg-surface text-slate-800 antialiased;
+    @apply bg-surface dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased;
     overscroll-behavior: none;
   }
   h1,
@@ -26,21 +26,23 @@
 }
 
 @layer components {
-  .btn-primary {
-    @apply bg-primary-400 text-white font-medium px-6 py-3 rounded-2xl
-           transition-all duration-200 active:scale-95 hover:bg-primary-500
-           shadow-soft disabled:opacity-50 disabled:cursor-not-allowed;
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-3xl shadow-card 
+      border border-slate-100 dark:border-slate-700 p-5;
   }
   .card {
-    @apply bg-white rounded-3xl shadow-card border border-slate-100 p-5;
+    @apply bg-white dark:bg-slate-800 rounded-3xl shadow-card 
+    border border-slate-100 dark:border-slate-700 p-5;
   }
   .input {
-    @apply w-full bg-primary-50 border border-primary-100 rounded-2xl px-4 py-3
-           text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2
-           focus:ring-primary-400 focus:border-transparent transition-all duration-200;
+    @apply w-full bg-primary-50 dark:bg-slate-700 border border-primary-100 
+      dark:border-slate-600 rounded-2xl px-4 py-3 text-slate-800 dark:text-slate-100
+      placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-400 
+      focus:border-transparent transition-all duration-200;
   }
   .page-container {
-    @apply max-w-md mx-auto min-h-screen bg-surface relative overflow-hidden;
+    @apply max-w-md mx-auto min-h-screen bg-surface dark:bg-slate-900 
+      relative overflow-hidden;
   }
   .bottom-nav-height {
     padding-bottom: 80px;
@@ -53,4 +55,37 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.card-animate {
+  @apply bg-white dark:bg-slate-800 rounded-3xl shadow-card border border-slate-100
+         dark:border-slate-700 p-5 transition-all duration-300 ease-out;
+}
+
+.card-animate:hover {
+  @apply shadow-glow -translate-y-0.5 scale-[1.01];
+}
+
+.page-enter {
+  animation: slideUp 0.25s ease-out both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    theme("colors.primary.50") 25%,
+    theme("colors.primary.100") 50%,
+    theme("colors.primary.50") 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

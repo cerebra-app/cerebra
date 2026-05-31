@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { CerebraLockup } from "../../components/ui/Logo";
-import { Button, Input, Divider } from "../../components/ui/index";
+import {
+  Button,
+  Input,
+  Divider,
+  PasswordInput,
+} from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
 const isEmail = (val) => /\S+@\S+\.\S+/.test(val);
@@ -148,9 +153,8 @@ export default function Login() {
                 autoComplete="username"
               />
               {mode === "password" && (
-                <Input
+                <PasswordInput
                   label="Password"
-                  type="password"
                   placeholder="Your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
