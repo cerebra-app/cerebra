@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabase";
 import { Card, Skeleton } from "../../components/ui/index";
 import { CerebraWordmark } from "../../components/ui/Logo";
 import { getDailyQuotes } from "../../lib/quotes";
+import { capitalize } from "../../lib/utils";
 
 // ── Quotes ──────────────────────────────────────────────────────
 // const QUOTES = [
@@ -321,7 +322,7 @@ function Avatar({ name, imageUrl }) {
           {/* User info header */}
           <div className="px-4 py-3 border-b border-slate-50 dark:border-slate-700">
             <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">
-              {name}
+              {capitalize(name)}
             </p>
             <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
               Cerebra account
@@ -963,8 +964,8 @@ export default function Home() {
     <div className="min-h-screen bg-surface dark:bg-slate-900">
       <div className="px-5 pt-8 pb-4 flex items-center justify-between">
         <div>
-          <h1 className="font-display text-xl font-bold text-slate-800">
-            {greeting()}, {profile?.display_name || "Student"}
+          <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
+            {greeting()}, {capitalize(profile?.display_name) || "Student"}
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
             {new Date().toLocaleDateString("en-US", {

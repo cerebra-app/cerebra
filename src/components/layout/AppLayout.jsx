@@ -102,21 +102,27 @@ export default function AppLayout({ children }) {
               <NavLink
                 key={to}
                 to={to}
-                className="flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-2xl transition-all duration-200 min-w-[60px]"
+                className="relative flex flex-col items-center gap-0.5 px-4 py-1.5
+    rounded-2xl transition-all duration-200 min-w-[60px]"
               >
                 <span
-                  className={`transition-colors duration-200 ${
-                    active ? "text-primary-400" : "text-slate-400"
-                  }`}
+                  className={`transition-colors duration-200
+    ${active ? "text-primary-400" : "text-slate-400"}`}
                 >
                   {icon(active)}
                 </span>
                 <span
                   className={`text-[10px] font-medium transition-colors duration-200
-                  ${active ? "text-primary-400" : "text-slate-400"}`}
+    ${active ? "text-primary-400" : "text-slate-400"}`}
                 >
                   {label}
                 </span>
+                {active && (
+                  <span
+                    className="absolute bottom-0 w-6 h-0.5 rounded-full bg-primary-400
+      shadow-[0_0_6px_2px_rgba(124,111,247,0.5)]"
+                  />
+                )}
               </NavLink>
             );
           })}
