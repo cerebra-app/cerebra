@@ -27,6 +27,8 @@ const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Resources = lazy(() => import("./pages/app/Resources"));
 const Documents = lazy(() => import("./pages/app/Documents"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
 
 // function AuthGuard({ children }) {
 //   const { isAuthenticated, loading, needsOnboarding, session } = useApp();
@@ -63,6 +65,8 @@ function PublicGuard({ children }) {
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsOfUse />} />
       <Route
         path="/"
         element={

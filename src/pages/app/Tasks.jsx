@@ -145,6 +145,7 @@ function TaskForm({ onSave, onCancel, initial = {} }) {
         type="date"
         value={form.due_date}
         onChange={set("due_date")}
+        className="w-full"
       />
 
       {/* Priority */}

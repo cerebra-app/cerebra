@@ -49,6 +49,16 @@
   }
 }
 
+@layer base {
+  :root {
+    --app-height: 100vh;
+  }
+}
+
+.full-height {
+  height: var(--app-height);
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -88,4 +98,11 @@
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  max-width: 100%;
 }

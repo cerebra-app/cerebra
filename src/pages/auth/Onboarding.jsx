@@ -190,7 +190,7 @@ export default function Onboarding() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="page-container min-h-screen flex flex-col px-6 py-8">
+    <div className=" page-container full-height flex flex-col px-6 py-8 overflow-y-auto">
       {/* Progress bar */}
       <div className="w-full bg-primary-50 rounded-full h-1.5 mb-8">
         <div

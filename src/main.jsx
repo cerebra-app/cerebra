@@ -11,6 +11,16 @@ else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
   document.documentElement.classList.add("dark");
 }
 
+// Fix mobile viewport height
+const setAppHeight = () => {
+  document.documentElement.style.setProperty(
+    "--app-height",
+    `${window.innerHeight}px`
+  );
+};
+setAppHeight();
+window.addEventListener("resize", setAppHeight);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />

@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { supabase } from "../../lib/supabase";
 import { Card, Skeleton } from "../../components/ui/index";
 import { CerebraWordmark } from "../../components/ui/Logo";
-import { getDailyQuote } from "../../lib/quotes";
+import { getDailyQuotes } from "../../lib/quotes";
 
 // ── Quotes ──────────────────────────────────────────────────────
 // const QUOTES = [
@@ -446,6 +446,64 @@ function IconSupport() {
 }
 
 // ── Quick Actions ──────────────────────────────────────────────────────
+
+function QuotesCarousel({ quotes }) {
+  const [current, setCurrent] = useState(0);
+  const timerRef = useRef(null);
+
+  const startTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % quotes.length);
+    }, 7000);
+  }, [quotes.length]);
+
+  useEffect(() => {
+    startTimer();
+    return () => clearInterval(timerRef.current);
+  }, [startTimer]);
+
+  const goTo = (i) => {
+    setCurrent(i);
+    startTimer();
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-3xl bg-primary-400">
+      <div className="relative h-32 overflow-hidden">
+        {quotes.map((q, i) => (
+          <div
+            key={i}
+            className={`absolute inset-0 px-5 pt-5 pb-8 transition-all duration-500 ease-in-out
+              ${
+                i === current
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-full"
+              }`}
+          >
+            <p className="text-white text-sm leading-relaxed mb-2">
+              "{q.text}"
+            </p>
+            <p className="text-primary-100 text-xs font-medium">— {q.author}</p>
+          </div>
+        ))}
+      </div>
+      <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+        {quotes.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`rounded-full transition-all duration-300
+              ${
+                i === current ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/40"
+              }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function QuickActions() {
   const actions = [
     { to: "/app/tasks", icon: <IconTasks />, label: "Tasks" },
@@ -620,9 +678,10 @@ const PHASE_CONFIG = {
   },
 };
 
-const SESSION_DURATION = 5 * 60; // 5 minutes in seconds
+// const SESSION_DURATION = 5 * 60;  5 minutes in seconds
 
-function BreathingCard() {
+function BreathingCard({ duration = 5 }) {
+  const SESSION_DURATION = duration * 60;
   const [status, setStatus] = useState("idle"); // idle | running | done
   const [phase, setPhase] = useState("inhale");
   const [phaseCount, setPhaseCount] = useState(PHASE_CONFIG.inhale.duration);
@@ -710,7 +769,7 @@ function BreathingCard() {
             Guided Breathing
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            4-4-6 therapeutic breathing · 5 min
+            4-4-6 therapeutic breathing · {duration} min
           </p>
         </div>
         {status === "running" && (
@@ -745,7 +804,8 @@ function BreathingCard() {
               Ready to breathe?
             </p>
             <p className="text-xs text-slate-400 max-w-[200px] leading-relaxed">
-              A 5-minute session to calm your nervous system and improve focus.
+              A {duration}-minute session to calm your nervous system and
+              improve focus.
             </p>
           </div>
           <button
@@ -859,7 +919,7 @@ function BreathingCard() {
 // ── Main ──────────────────────────────────────────────────────
 export default function Home() {
   const { profile, session } = useApp();
-  const quote = getDailyQuote();
+  const quotes = getDailyQuotes();
 
   const greeting = () => {
     const h = new Date().getHours();
@@ -887,16 +947,7 @@ export default function Home() {
       </div>
 
       <div className="px-5 pb-8 flex flex-col gap-5">
-        {profile?.show_quotes !== false && (
-          <div className="bg-primary-400 rounded-3xl p-5 animate-fade-in">
-            <p className="text-white text-sm leading-relaxed mb-2">
-              "{quote.text}"
-            </p>
-            <p className="text-primary-100 text-xs font-medium">
-              — {quote.author}
-            </p>
-          </div>
-        )}
+        {profile?.show_quotes !== false && <QuotesCarousel quotes={quotes} />}
 
         <div>
           <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
@@ -918,7 +969,7 @@ export default function Home() {
           <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
             Mindfulness
           </h2>
-          <BreathingCard />
+          <BreathingCard duration={profile?.mindfulness_duration || 5} />
         </div>
       </div>
       {session?.user?.id && <UrgentTaskNudge userId={session.user.id} />}

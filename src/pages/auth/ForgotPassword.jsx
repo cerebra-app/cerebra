@@ -28,7 +28,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="page-container min-h-screen flex flex-col px-6">
+    <div className="page-container full-height flex flex-col px-6 overflow-y-auto">
       <div className="pt-5 pb-8">
         <Link
           to="/login"

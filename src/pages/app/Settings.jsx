@@ -57,6 +57,7 @@ export default function Settings() {
   const [savingProfile, setSavingProfile] = useState(false);
 
   const [currentPassword, setCurrentPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [savingPassword, setSavingPassword] = useState(false);
@@ -104,19 +105,39 @@ export default function Settings() {
   };
 
   const handleChangePassword = async () => {
+    setPasswordError("");
+    if (!currentPassword) {
+      setPasswordError("Current password is required");
+      return;
+    }
     if (newPassword.length < 8) {
-      toast("Password must be at least 8 characters", "error");
+      setPasswordError("New password must be at least 8 characters");
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast("Passwords do not match", "error");
+      setPasswordError("Passwords do not match");
       return;
     }
+
     setSavingPassword(true);
+
+    // Verify current password by re-authenticating
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: session.user.email,
+      password: currentPassword,
+    });
+
+    if (signInError) {
+      setSavingPassword(false);
+      setPasswordError("Current password is incorrect");
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     setSavingPassword(false);
-    if (error) toast(error.message, "error");
-    else {
+    if (error) {
+      setPasswordError(error.message);
+    } else {
       toast("Password updated", "success");
       setCurrentPassword("");
       setNewPassword("");
@@ -315,12 +336,18 @@ export default function Settings() {
       </div>
 
       {/* Security */}
-      <div
-        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-4 overflow-hidden 
-  border border-slate-100 dark:border-slate-700 shadow-card"
-      >
+      <div className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden border border-slate-100 dark:border-slate-700 shadow-card">
         <SectionLabel label="Security" />
         <div className="px-5 pb-4 flex flex-col gap-3">
+          <PasswordInput
+            label="Current password"
+            value={currentPassword}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+              setPasswordError("");
+            }}
+            placeholder="Your current password"
+          />
           <PasswordInput
             label="New password"
             value={newPassword}
@@ -333,6 +360,9 @@ export default function Settings() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Repeat new password"
           />
+          {passwordError && (
+            <p className="text-xs text-red-500">{passwordError}</p>
+          )}
           <Button
             variant="ghost"
             size="md"
@@ -374,6 +404,32 @@ export default function Settings() {
             {profile?.journal_pin ? "Change PIN" : "Set PIN"}
           </button>
         </SettingsRow>
+      </div>
+
+      {/* Mindfulness */}
+      <div className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden border border-slate-100 dark:border-slate-700 shadow-card">
+        <SectionLabel label="Mindfulness" />
+        <div className="px-5 pb-4">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
+            Session duration
+          </p>
+          <div className="flex gap-2">
+            {[3, 5, 10].map((mins) => (
+              <button
+                key={mins}
+                onClick={() => handleToggle("mindfulness_duration", mins)}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-medium transition-all
+            ${
+              (profile?.mindfulness_duration || 5) === mins
+                ? "bg-primary-400 text-white"
+                : "bg-primary-50 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:bg-primary-100"
+            }`}
+              >
+                {mins} min
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Notifications placeholder */}
@@ -449,19 +505,19 @@ export default function Settings() {
       <div className="px-5 pt-6 text-center">
         <p className="text-xs text-slate-400">Cerebra · Version 1.0.0</p>
         <div className="flex items-center justify-center gap-3 mt-2">
-          <a
-            href="#"
+          <Link
+            to="/privacy"
             className="text-xs text-primary-400 underline underline-offset-2"
           >
             Privacy Policy
-          </a>
+          </Link>
           <span className="text-slate-300 text-xs">·</span>
-          <a
-            href="#"
+          <Link
+            to="/terms"
             className="text-xs text-primary-400 underline underline-offset-2"
           >
             Terms of Use
-          </a>
+          </Link>
         </div>
       </div>
     </div>

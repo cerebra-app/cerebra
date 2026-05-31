@@ -191,7 +191,7 @@ function PinPad({
     confirmMode && stage === "confirm" ? "Enter the same PIN again" : subtitle;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-6 animate-fade-in">
+    <div className="flex flex-col items-center justify-center full-height px-6 animate-fade-in">
       {/* Lock icon */}
       <div className="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center mb-6">
         <svg
@@ -370,7 +370,7 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface dark:bg-slate-900">
+    <div className="full-height flex flex-col bg-surface dark:bg-slate-900 overflow-hidden">
       {/* Header */}
       <div className="px-5 pt-8 pb-4 flex items-center justify-between">
         <button
@@ -391,7 +391,9 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          <span className="text-sm font-medium">Journal</span>
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+            Journal
+          </span>
         </button>
         <div className="flex items-center gap-2">
           {entry && (
@@ -472,8 +474,8 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="What's on your mind today? This is your safe space — write freely."
-          className="flex-1 w-full bg-transparent text-slate-700 text-sm leading-relaxed
-            placeholder-slate-300 resize-none focus:outline-none min-h-[300px]"
+          className="flex-1 w-full bg-transparent text-slate-700 dark:text-slate-100 text-sm leading-relaxed
+  placeholder-slate-300 dark:placeholder-slate-500 resize-none focus:outline-none min-h-[300px]"
         />
         <p className="text-xs text-slate-300 dark:text-slate-600 text-right py-3">
           {wordCount} word{wordCount !== 1 ? "s" : ""}
@@ -661,7 +663,7 @@ export default function Journal() {
 
   // ── List screen ──
   return (
-    <div className="min-h-screen bg-surface dark:bg-slate-900">
+    <div className="full-height overflow-hidden bg-surface dark:bg-slate-900">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -753,7 +755,7 @@ export default function Journal() {
       </div>
 
       {/* Entry list */}
-      <div className="px-5 pb-8 flex flex-col gap-3">
+      <div className="flex-1 overflow-y-auto px-5 pb-8 flex flex-col gap-3">
         {loading && (
           <>
             <Skeleton className="h-24 w-full" />

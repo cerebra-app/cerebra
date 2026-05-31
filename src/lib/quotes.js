@@ -94,7 +94,15 @@ export const QUOTES = [
   },
 ];
 
-export function getDailyQuote() {
+// export function getDailyQuote() {
+//   const day = new Date().getDate() + new Date().getMonth() * 31;
+//   return QUOTES[day % QUOTES.length];
+// }
+
+export function getDailyQuotes() {
   const day = new Date().getDate() + new Date().getMonth() * 31;
-  return QUOTES[day % QUOTES.length];
+  const first = day % QUOTES.length;
+  const second = (first + 7) % QUOTES.length;
+  const third = (first + 14) % QUOTES.length;
+  return [QUOTES[first], QUOTES[second], QUOTES[third]];
 }

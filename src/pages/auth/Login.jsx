@@ -89,7 +89,7 @@ export default function Login() {
   };
 
   return (
-    <div className="page-container min-h-screen flex flex-col px-6">
+    <div className="page-container flex flex-col px-6 overflow-y-auto">
       <div className="pt-5 pb-8">
         <Link
           to="/"

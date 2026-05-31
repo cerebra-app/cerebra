@@ -339,7 +339,7 @@ export default function More() {
           label="Send feedback"
           onClick={() =>
             window.open(
-              "mailto:cerebraapp@gmail.com?subject=Cerebra Feedback",
+              "mailto:mycerebra@gmail.com?subject=Cerebra Feedback",
               "_blank"
             )
           }
@@ -388,19 +388,19 @@ export default function More() {
       <div className="px-5 py-6 text-center">
         <p className="text-xs text-slate-400">Cerebra · Version 1.0.0</p>
         <div className="flex items-center justify-center gap-3 mt-2">
-          <a
-            href="#"
+          <Link
+            to="/privacy"
             className="text-xs text-primary-400 underline underline-offset-2"
           >
             Privacy Policy
-          </a>
+          </Link>
           <span className="text-slate-300 text-xs">·</span>
-          <a
-            href="#"
+          <Link
+            to="/terms"
             className="text-xs text-primary-400 underline underline-offset-2"
           >
             Terms of Use
-          </a>
+          </Link>
         </div>
       </div>
     </div>

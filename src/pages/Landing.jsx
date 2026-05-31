@@ -219,13 +219,19 @@ export default function Landing() {
       <footer className="px-6 pb-8 text-center">
         <p className="text-xs text-slate-400">
           By signing up you agree to our{" "}
-          <a href="#" className="text-primary-400 underline underline-offset-2">
-            Terms
-          </a>
+          <Link
+            to="/terms"
+            className="text-primary-400 underline underline-offset-2"
+          >
+            Terms of Use
+          </Link>
           {" & "}
-          <a href="#" className="text-primary-400 underline underline-offset-2">
+          <Link
+            to="/privacy"
+            className="text-primary-400 underline underline-offset-2"
+          >
             Privacy Policy
-          </a>
+          </Link>
         </p>
       </footer>
     </div>
