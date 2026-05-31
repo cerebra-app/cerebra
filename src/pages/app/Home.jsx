@@ -450,6 +450,8 @@ function IconSupport() {
 function QuotesCarousel({ quotes }) {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef(null);
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
 
   const startTimer = useCallback(() => {
     clearInterval(timerRef.current);
@@ -468,8 +470,35 @@ function QuotesCarousel({ quotes }) {
     startTimer();
   };
 
+  const next = () => goTo((current + 1) % quotes.length);
+  const prev = () => goTo((current - 1 + quotes.length) % quotes.length);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) < 40) return; // ignore small movements
+    if (diff > 0) next(); // swiped left → next
+    else prev(); // swiped right → previous
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-primary-400">
+    <div
+      className="relative overflow-hidden rounded-3xl bg-primary-400 select-none"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="relative h-32 overflow-hidden">
         {quotes.map((q, i) => (
           <div
@@ -478,6 +507,8 @@ function QuotesCarousel({ quotes }) {
               ${
                 i === current
                   ? "opacity-100 translate-x-0"
+                  : i < current
+                  ? "opacity-0 -translate-x-full"
                   : "opacity-0 translate-x-full"
               }`}
           >
