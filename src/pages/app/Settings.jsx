@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { useToast } from "../../context/ToastContext";
+import {
+  requestNotificationPermission,
+  subscribeToPush,
+  unsubscribeFromPush,
+  getNotificationStatus,
+} from "../../lib/notifications";
 import { supabase } from "../../lib/supabase";
 import {
   Input,
@@ -68,6 +74,9 @@ export default function Settings() {
   const appearanceRef = useRef(null);
   const location = useLocation();
 
+  const [notifStatus, setNotifStatus] = useState(getNotificationStatus());
+  const [enablingNotif, setEnablingNotif] = useState(false);
+
   useEffect(() => {
     if (location.search.includes("tab=profile")) return; // profile stays at top
     if (location.search.includes("tab=appearance")) {
@@ -87,6 +96,52 @@ export default function Settings() {
       setDriveLink(profile.drive_link || "");
     }
   }, [profile]);
+
+  const handleEnableNotifications = async () => {
+    setEnablingNotif(true);
+
+    const permResult = await requestNotificationPermission();
+    if (permResult.error) {
+      toast(
+        permResult.error === "Permission denied"
+          ? "Notifications blocked. Enable them in your browser settings."
+          : permResult.error,
+        "error"
+      );
+      setEnablingNotif(false);
+      return;
+    }
+
+    const subResult = await subscribeToPush();
+    if (subResult.error) {
+      toast("Could not enable notifications", "error");
+      setEnablingNotif(false);
+      return;
+    }
+
+    // Save subscription to Supabase
+    await supabase.from("push_subscriptions").upsert({
+      user_id: session.user.id,
+      subscription: subResult.subscription.toJSON(),
+      device_name: navigator.userAgent.includes("Mobile")
+        ? "Mobile"
+        : "Desktop",
+    });
+
+    setNotifStatus("granted");
+    toast("Notifications enabled!", "success");
+    setEnablingNotif(false);
+  };
+
+  const handleDisableNotifications = async () => {
+    await unsubscribeFromPush();
+    await supabase
+      .from("push_subscriptions")
+      .delete()
+      .eq("user_id", session.user.id);
+    setNotifStatus("default");
+    toast("Notifications disabled", "success");
+  };
 
   const handleSaveProfile = async () => {
     if (!displayName.trim()) {
@@ -433,24 +488,108 @@ export default function Settings() {
       </div>
 
       {/* Notifications placeholder */}
+      {/* Notifications */}
       <div
-        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-4 overflow-hidden 
+        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden
   border border-slate-100 dark:border-slate-700 shadow-card"
       >
         <SectionLabel label="Notifications" />
-        <SettingsRow
-          label="Daily reminder"
-          sublabel="Coming soon — push notifications"
-        >
-          <Toggle checked={false} onChange={() => {}} disabled />
-        </SettingsRow>
-        <Divider />
-        <SettingsRow
-          label="Journal reminder"
-          sublabel="Coming soon — push notifications"
-        >
-          <Toggle checked={false} onChange={() => {}} disabled />
-        </SettingsRow>
+
+        {notifStatus === "granted" ? (
+          <>
+            <SettingsRow
+              label="Notifications enabled"
+              sublabel="You'll receive reminders and updates"
+            >
+              <button
+                onClick={handleDisableNotifications}
+                className="text-xs text-red-400 font-medium hover:text-red-500 transition-colors"
+              >
+                Disable
+              </button>
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Task due reminders"
+              sublabel="Daily at 8am for tasks due today"
+            >
+              <Toggle
+                checked={profile?.notif_task_due !== false}
+                onChange={(v) => handleToggle("notif_task_due", v)}
+              />
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Overdue task alerts"
+              sublabel="Morning reminder for overdue tasks"
+            >
+              <Toggle
+                checked={profile?.notif_task_overdue !== false}
+                onChange={(v) => handleToggle("notif_task_overdue", v)}
+              />
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Journal reminder"
+              sublabel="Evening nudge to write in your journal"
+            >
+              <Toggle
+                checked={profile?.notif_journal_reminder !== false}
+                onChange={(v) => handleToggle("notif_journal_reminder", v)}
+              />
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Streak reminder"
+              sublabel="If you haven't checked in by 8pm"
+            >
+              <Toggle
+                checked={profile?.notif_streak !== false}
+                onChange={(v) => handleToggle("notif_streak", v)}
+              />
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Mindfulness reminder"
+              sublabel="Daily breathing session reminder"
+            >
+              <Toggle
+                checked={profile?.notif_mindfulness === true}
+                onChange={(v) => handleToggle("notif_mindfulness", v)}
+              />
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Streak milestones"
+              sublabel="Celebrate streak achievements"
+            >
+              <Toggle
+                checked={profile?.notif_milestones !== false}
+                onChange={(v) => handleToggle("notif_milestones", v)}
+              />
+            </SettingsRow>
+          </>
+        ) : notifStatus === "denied" ? (
+          <div className="px-5 py-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+              Notifications are blocked. To enable them, go to your browser
+              settings and allow notifications for this site.
+            </p>
+          </div>
+        ) : (
+          <div className="px-5 py-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              Get reminders for tasks, journal entries, streaks and more.
+            </p>
+            <Button
+              size="md"
+              loading={enablingNotif}
+              onClick={handleEnableNotifications}
+            >
+              Enable notifications
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Danger zone */}

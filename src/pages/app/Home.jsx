@@ -7,6 +7,7 @@ import { Card, Skeleton } from "../../components/ui/index";
 import { CerebraWordmark } from "../../components/ui/Logo";
 import { getDailyQuotes } from "../../lib/quotes";
 import { capitalize } from "../../lib/utils";
+import { getNotificationStatus } from "../../lib/notifications";
 
 // ── Quotes ──────────────────────────────────────────────────────
 // const QUOTES = [
@@ -1046,6 +1047,40 @@ function BreathingCard({ duration = 5 }) {
 export default function Home() {
   const { profile, session } = useApp();
   const quotes = getDailyQuotes();
+
+  useEffect(() => {
+    if (getNotificationStatus() !== "granted") return;
+    if (!session?.user?.id) return;
+
+    const checkAndNotify = async () => {
+      const today = new Date().toISOString().split("T")[0];
+
+      const { data: dueTasks } = await supabase
+        .from("tasks")
+        .select("title")
+        .eq("user_id", session.user.id)
+        .eq("is_completed", false)
+        .eq("due_date", today)
+        .eq("priority", "high")
+        .limit(1);
+
+      if (dueTasks?.length > 0) {
+        new Notification("Task due today", {
+          body: dueTasks[0].title,
+          icon: "/pwa-192x192.png",
+          badge: "/favicon-32x32.png",
+          tag: "task-due",
+        });
+      }
+    };
+
+    // Only run once per session
+    const checked = sessionStorage.getItem("notif_checked");
+    if (!checked) {
+      checkAndNotify();
+      sessionStorage.setItem("notif_checked", "true");
+    }
+  }, [session?.user?.id]);
 
   const greeting = () => {
     const h = new Date().getHours();
