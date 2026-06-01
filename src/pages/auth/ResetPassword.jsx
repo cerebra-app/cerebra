@@ -33,7 +33,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className=" page-container full-height flex flex-col px-6 safe-top overflow-y-auto">
+    <div className=" page-container full-height flex flex-col px-6 safe-top overflow-y-auto page-enter">
       <div className="pt-5 pb-8" />
       <div className="flex-1 flex flex-col animate-slide-up">
         <CerebraLockup height={36} className="mb-8" />

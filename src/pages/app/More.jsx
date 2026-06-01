@@ -82,7 +82,7 @@ export default function More() {
   };
 
   return (
-    <div className="min-h-screen bg-surface dark:bg-slate-900">
+    <div className="min-h-screen bg-surface dark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <h1 className="font-display text-xl font-bold text-slate-800">More</h1>

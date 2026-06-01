@@ -1,3 +1,4 @@
+import { supabase } from "../../lib/supabase";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
@@ -132,7 +133,7 @@ const FEATURE_OPTIONS = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { updateProfile, session } = useApp();
+  const { updateProfile, session, refetchProfile } = useApp();
   const toast = useToast();
 
   const [step, setStep] = useState(0);
@@ -169,15 +170,39 @@ export default function Onboarding() {
   const handleFinish = async () => {
     setLoading(true);
 
-    // Profile already exists from signup — updating it with onboarding data
-    const { error } = await updateProfile({
-      display_name: displayName.trim(),
-      university: university.trim(),
-      theme: "system",
-      show_quotes: true,
-      show_streak: true,
-      onboarding_complete: true,
-    });
+    // This is to try update first, if no rows affected then we insert
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", session.user.id)
+      .single();
+
+    let error;
+    if (existing) {
+      const result = await updateProfile({
+        display_name: displayName.trim(),
+        university: university.trim(),
+        theme: "light",
+        show_quotes: true,
+        show_streak: true,
+        onboarding_complete: true,
+      });
+      error = result.error;
+    } else {
+      const result = await supabase.from("profiles").insert({
+        id: session.user.id,
+        username: session.user.email.split("@")[0].toLowerCase(),
+        display_name: displayName.trim(),
+        university: university.trim(),
+        email: session.user.email,
+        theme: "light",
+        show_quotes: true,
+        show_streak: true,
+        onboarding_complete: true,
+      });
+      error = result.error;
+      if (!error) await refetchProfile();
+    }
 
     setLoading(false);
     if (error) {
@@ -190,7 +215,7 @@ export default function Onboarding() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className=" page-container full-height flex flex-col px-6 py-8 overflow-y-auto">
+    <div className="page-container bg-surface dark:bg-surface-dark flex flex-col px-6 py-8 overflow-y-auto">
       {/* Progress bar */}
       <div className="w-full bg-primary-50 rounded-full h-1.5 mb-8">
         <div
@@ -205,10 +230,10 @@ export default function Onboarding() {
           <div className="flex justify-center mb-8">
             <CerebraIcon size={64} />
           </div>
-          <h1 className="font-display text-2xl font-bold text-slate-800 mb-2 text-center">
+          <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-2 text-center">
             Welcome to Cerebra 👋
           </h1>
-          <p className="text-slate-400 text-sm text-center leading-relaxed mb-10">
+          <p className="text-slate-400 dark:text-slate-500 text-sm text-center leading-relaxed mb-10">
             Let's get your space set up. This takes about 30 seconds.
           </p>
           <Input
@@ -250,10 +275,10 @@ export default function Onboarding() {
               />
             </svg>
           </div>
-          <h1 className="font-display text-2xl font-bold text-slate-800 mb-2 text-center">
+          <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-2 text-center">
             Where do you study?
           </h1>
-          <p className="text-slate-400 text-sm text-center leading-relaxed mb-10">
+          <p className="text-slate-400 dark:text-slate-500 text-sm text-center leading-relaxed mb-10">
             This helps us tailor your experience.
           </p>
           <Input
@@ -291,7 +316,10 @@ export default function Onboarding() {
       {/* Step 2 — Feature preferences */}
       {step === 2 && (
         <div className="flex-1 flex flex-col animate-slide-up">
-          <div className="w-16 h-16 rounded-2xl bg-primary-400/10 flex items-center justify-center mx-auto mb-6 text-primary-400">
+          <div
+            className="w-16 h-16 rounded-2xl bg-primary-400/10 flex items-center
+      justify-center mx-auto mb-4 text-primary-400"
+          >
             <svg
               width="28"
               height="28"
@@ -307,41 +335,46 @@ export default function Onboarding() {
               />
             </svg>
           </div>
-          <h1 className="font-display text-2xl font-bold text-slate-800 mb-2 text-center">
+
+          <h1
+            className="font-display text-2xl font-bold text-slate-800
+      dark:text-white mb-1 text-center"
+          >
             What matters to you?
           </h1>
-          <p className="text-slate-400 text-sm text-center leading-relaxed mb-6">
+          <p className="text-slate-400 text-sm text-center leading-relaxed mb-4">
             Pick what you're most excited about. You can always change this
             later.
           </p>
 
-          <div className="grid grid-cols-2 gap-3 mb-6">
+          <div className="grid grid-cols-2 gap-2 mb-3">
             {FEATURE_OPTIONS.map((f) => {
               const selected = selectedFeatures.includes(f.id);
               return (
                 <button
                   key={f.id}
                   onClick={() => toggleFeature(f.id)}
-                  className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200 text-left
-          ${
-            selected
-              ? "border-primary-400 bg-primary-400/10 text-primary-400"
-              : "border-slate-700 bg-slate-800 text-slate-300 hover:border-primary-600"
-          }`}
+                  className={`flex items-center gap-3 p-3 rounded-2xl border-2
+  transition-all duration-200 text-left
+  ${
+    selected
+      ? "border-primary-400 bg-primary-400/10 text-primary-400"
+      : ": 'border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary-300'"
+  }`}
                 >
                   <span
                     className={selected ? "text-primary-400" : "text-slate-400"}
                   >
                     {f.icon}
                   </span>
-                  <span className="text-sm font-medium leading-tight">
+                  <span className="text-xs font-medium leading-tight">
                     {f.label}
                   </span>
                   {selected && (
                     <span className="ml-auto text-primary-400 shrink-0">
                       <svg
-                        width="16"
-                        height="16"
+                        width="14"
+                        height="14"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -360,27 +393,27 @@ export default function Onboarding() {
             })}
           </div>
 
-          <p className="text-xs text-slate-400 text-center mb-6">
+          <p className="text-xs text-slate-400 text-center mb-4">
             {selectedFeatures.length === 0
               ? "Select at least one to continue"
               : `${selectedFeatures.length} selected — great choice!`}
           </p>
 
-          <div className="mt-auto pt-8 grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             <Button
               variant="ghost"
-              onClick={() => setStep(step - 1)}
+              onClick={() => setStep(1)}
               className="col-span-1"
             >
               ←
             </Button>
             <Button
-              onClick={step === 1 ? handleNext : handleFinish}
-              loading={loading}
-              disabled={step === 2 && selectedFeatures.length === 0}
               className="col-span-3"
+              loading={loading}
+              disabled={selectedFeatures.length === 0}
+              onClick={handleFinish}
             >
-              {step === 2 ? "Let's go 🎉" : "Continue →"}
+              Let's go 🎉
             </Button>
           </div>
         </div>

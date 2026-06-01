@@ -10,6 +10,7 @@ import { AppProvider, useApp } from "./context/AppContext";
 import { ToastProvider } from "./context/ToastContext";
 import { PageLoader } from "./components/ui/index";
 import AppLayout from "./components/layout/AppLayout";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/auth/Login"));
@@ -64,86 +65,89 @@ function PublicGuard({ children }) {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/privacy" element={<PrivacyPolicy />} />
-      <Route path="/terms" element={<TermsOfUse />} />
-      <Route
-        path="/"
-        element={
-          <PublicGuard>
-            <Landing />
-          </PublicGuard>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <PublicGuard>
-            <Login />
-          </PublicGuard>
-        }
-      />
-      <Route
-        path="/signup"
-        element={
-          <PublicGuard>
-            <Signup />
-          </PublicGuard>
-        }
-      />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route
-        path="/onboarding"
-        element={
-          <AuthGuard>
-            <Onboarding />
-          </AuthGuard>
-        }
-      />
-      <Route
-        path="/app/*"
-        element={
-          <AuthGuard>
-            <AppLayout>
-              <Routes>
-                <Route index element={<Navigate to="home" replace />} />
-                <Route path="home" element={<Home />} />
-                <Route path="tasks" element={<Tasks />} />
-                <Route path="journal" element={<Journal />} />
-                <Route path="more" element={<More />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="resources" element={<Resources />} />
-                <Route path="documents" element={<Documents />} />
-                <Route
-                  path="timetable"
-                  element={<ComingSoon feature="timetable" />}
-                />
-                <Route path="quiz" element={<ComingSoon feature="quiz" />} />
-                <Route
-                  path="flashcards"
-                  element={<ComingSoon feature="flashcards" />}
-                />
-                <Route
-                  path="documents"
-                  element={<ComingSoon feature="documents" />}
-                />
-                <Route
-                  path="peer-chat"
-                  element={<ComingSoon feature="peer-chat" />}
-                />
-                <Route
-                  path="counselor"
-                  element={<ComingSoon feature="counselor" />}
-                />
-              </Routes>
-            </AppLayout>
-          </AuthGuard>
-        }
-      />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfUse />} />
+        <Route
+          path="/"
+          element={
+            <PublicGuard>
+              <Landing />
+            </PublicGuard>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicGuard>
+              <Login />
+            </PublicGuard>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicGuard>
+              <Signup />
+            </PublicGuard>
+          }
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route
+          path="/onboarding"
+          element={
+            <AuthGuard>
+              <Onboarding />
+            </AuthGuard>
+          }
+        />
+        <Route
+          path="/app/*"
+          element={
+            <AuthGuard>
+              <AppLayout>
+                <Routes>
+                  <Route index element={<Navigate to="home" replace />} />
+                  <Route path="home" element={<Home />} />
+                  <Route path="tasks" element={<Tasks />} />
+                  <Route path="journal" element={<Journal />} />
+                  <Route path="more" element={<More />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="resources" element={<Resources />} />
+                  <Route path="documents" element={<Documents />} />
+                  <Route
+                    path="timetable"
+                    element={<ComingSoon feature="timetable" />}
+                  />
+                  <Route path="quiz" element={<ComingSoon feature="quiz" />} />
+                  <Route
+                    path="flashcards"
+                    element={<ComingSoon feature="flashcards" />}
+                  />
+                  <Route
+                    path="documents"
+                    element={<ComingSoon feature="documents" />}
+                  />
+                  <Route
+                    path="peer-chat"
+                    element={<ComingSoon feature="peer-chat" />}
+                  />
+                  <Route
+                    path="counselor"
+                    element={<ComingSoon feature="counselor" />}
+                  />
+                </Routes>
+              </AppLayout>
+            </AuthGuard>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 

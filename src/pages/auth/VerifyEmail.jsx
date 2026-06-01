@@ -25,7 +25,7 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className="page-container full-height flex flex-col items-center justify-center px-6 text-center overflow-y-auto">
+    <div className="page-container full-height flex flex-col items-center justify-center px-6 text-center overflow-y-auto page-enter">
       <CerebraLockup height={36} className="mb-10" />
       <div className="text-5xl mb-6">✉️</div>
       <h1 className="font-display text-2xl font-bold text-slate-800 mb-3">

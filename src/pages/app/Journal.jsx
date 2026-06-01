@@ -370,7 +370,7 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <div className="full-height flex flex-col bg-surface dark:bg-slate-900 overflow-hidden">
+    <div className="full-height flex flex-col bg-surface dark:bg-slate-900 overflow-hidden page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4 flex items-center justify-between">
         <button
@@ -663,7 +663,7 @@ export default function Journal() {
 
   // ── List screen ──
   return (
-    <div className="full-height overflow-hidden bg-surface dark:bg-slate-900">
+    <div className="full-height overflow-hidden bg-surface dark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-4">

@@ -13,35 +13,38 @@ export function AppProvider({ children }) {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   const applyTheme = useCallback((theme) => {
     const root = document.documentElement;
-    localStorage.setItem("cerebra-theme", theme);
+    localStorage.setItem("cerebra_theme", theme);
     if (theme === "dark") {
       root.classList.add("dark");
-    } else if (theme === "light") {
-      root.classList.remove("dark");
     } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      root.classList.toggle("dark", prefersDark);
+      root.classList.remove("dark");
     }
   }, []);
 
   const fetchProfile = useCallback(
     async (userId) => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
+      setProfileLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .single();
 
-      if (error && error.code === "PGRST116") {
-        setProfile(null);
-      } else if (data) {
-        setProfile(data);
-        applyTheme(data.theme || "system");
+        if (error && error.code === "PGRST116") {
+          setProfile(null);
+        } else if (data) {
+          setProfile(data);
+          applyTheme(data.theme || "light");
+        }
+      } catch (err) {
+        console.error("fetchProfile error:", err);
+      } finally {
+        setProfileLoading(false);
       }
     },
     [applyTheme]
@@ -86,6 +89,7 @@ export function AppProvider({ children }) {
         fetchProfile(session.user.id).finally(() => setLoading(false));
       } else {
         setLoading(false);
+        setProfileLoading(false);
       }
     });
 
@@ -94,21 +98,14 @@ export function AppProvider({ children }) {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session?.user?.id) fetchProfile(session.user.id);
-      else setProfile(null);
+      else {
+        setProfile(null);
+        setProfileLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [fetchProfile]);
-
-  useEffect(() => {
-    if (profile?.theme === "system" || !profile?.theme) {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const handler = (e) =>
-        document.documentElement.classList.toggle("dark", e.matches);
-      mq.addEventListener("change", handler);
-      return () => mq.removeEventListener("change", handler);
-    }
-  }, [profile?.theme]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -122,9 +119,12 @@ export function AppProvider({ children }) {
         session,
         profile,
         loading,
+        profileLoading,
         isAuthenticated: !!session,
         needsOnboarding:
-          !!session && (!profile || !profile.onboarding_complete),
+          !!session &&
+          !profileLoading &&
+          (!profile || profile.onboarding_complete === false),
         updateProfile,
         createProfile,
         signOut,
