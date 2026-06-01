@@ -182,7 +182,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-surface pb-12dark:bg-slate-900 page-enter">
+    <div className="min-h-screen bg-surface pb-12 dark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-2 flex items-center gap-3">
         <button
