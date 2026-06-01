@@ -38,12 +38,19 @@
   }
   html {
     font-family: "DM Sans", sans-serif;
+    /* overscroll-behavior: none; */
   }
   body {
-    @apply bg-surface dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased;
-    overscroll-behavior: none;
+    @apply bg-surface dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased dark:bg-slate-900;
+    /* overscroll-behavior: none; */
   }
-  h1,
+  html,
+  body,
+  #root {
+    /* @apply bg-surface dark:bg-slate-900; */
+    min-height: 100%;
+  }
+  s h1,
   h2,
   h3,
   h4,
@@ -69,7 +76,7 @@
       focus:border-transparent transition-all duration-200;
   }
   .page-container {
-    @apply max-w-md mx-auto min-h-screen bg-surface dark:bg-surface-dark relative overflow-hidden;
+    @apply max-w-md mx-auto min-h-screen bg-surface dark:bg-slate-900 relative overflow-hidden;
   }
 
   .bottom-nav-height {

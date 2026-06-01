@@ -87,12 +87,12 @@ export default function AppLayout({ children }) {
   const location = useLocation();
   return (
     <div className="page-container">
-      <main className="bottom-nav-height overflow-y-auto scrollbar-hide">
+      <main className="bottom-nav-height overflow-y-auto scrollbar-hide bg-surfacedark:bg-slate-900">
         {children}
       </main>
       <nav
         className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md
-  bg-white/90 dark:bg-slate-900/90 backdrop-blur-md
+  bg-white/90dark:bg-slate-900/90 backdrop-blur-md
   border-t border-slate-100 dark:border-slate-800 z-40"
       >
         <div className="flex items-center justify-around px-2 py-2">

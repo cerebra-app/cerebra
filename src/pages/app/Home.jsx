@@ -197,16 +197,24 @@ function IOSInstallPrompt() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // Only show on iOS Safari, not in standalone mode, not if dismissed before
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isStandalone = window.navigator.standalone === true;
-    const dismissed = localStorage.getItem("ios_prompt_dismissed");
-    if (isIOS && !isStandalone && !dismissed) {
-      setTimeout(() => setShow(true), 3000);
+    const permanentlyDismissed = localStorage.getItem("ios_prompt_dismissed");
+    const sessionDismissed = sessionStorage.getItem(
+      "ios_prompt_session_dismissed"
+    );
+
+    if (isIOS && !isStandalone && !permanentlyDismissed && !sessionDismissed) {
+      setTimeout(() => setShow(true), 1500);
     }
   }, []);
 
-  const dismiss = () => {
+  const dismissSession = () => {
+    setShow(false);
+    sessionStorage.setItem("ios_prompt_session_dismissed", "true");
+  };
+
+  const dismissPermanently = () => {
     setShow(false);
     localStorage.setItem("ios_prompt_dismissed", "true");
   };
@@ -215,54 +223,63 @@ function IOSInstallPrompt() {
 
   return (
     <div className="fixed bottom-24 left-4 right-4 z-50 animate-slide-up">
-      <div className="bg-slate-800 rounded-2xl p-4 shadow-glow flex items-start gap-3">
-        <div
-          className="w-8 h-8 rounded-xl bg-primary-400/20 flex items-center
-          justify-center shrink-0 mt-0.5 text-primary-400"
-        >
-          <svg
-            width="16"
-            height="16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
+      <div className="bg-slate-800 rounded-2xl p-4 shadow-glow">
+        <div className="flex items-start gap-3">
+          <div
+            className="w-8 h-8 rounded-xl bg-primary-400/20 flex items-center
+            justify-center shrink-0 mt-0.5 text-primary-400"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-            />
-          </svg>
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-medium text-white mb-1">Install Cerebra</p>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            Tap the <span className="text-white font-medium">Share</span> button
-            below, then{" "}
-            <span className="text-white font-medium">Add to Home Screen</span>{" "}
-            to install the app.
-          </p>
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+              />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-white mb-1">
+              Install Cerebra
+            </p>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Tap the <span className="text-white font-medium">Share</span>{" "}
+              button, then{" "}
+              <span className="text-white font-medium">Add to Home Screen</span>
+              .
+            </p>
+          </div>
+          <button
+            onClick={dismissSession}
+            className="text-slate-500 hover:text-slate-300 transition-colors shrink-0"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
         <button
-          onClick={dismiss}
-          className="text-slate-500 hover:text-slate-300
-          transition-colors shrink-0"
+          onClick={dismissPermanently}
+          className="mt-3 text-xs text-slate-500 hover:text-slate-400 transition-colors w-full text-right"
         >
-          <svg
-            width="16"
-            height="16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          Don't show again
         </button>
       </div>
     </div>
@@ -1038,49 +1055,54 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-surface dark:bg-slate-900 page-enter">
-      <div className="px-5 pt-8 pb-4 flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
-            {greeting()}, {capitalize(profile?.display_name) || "Student"}
-          </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            {new Date().toLocaleDateString("en-US", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </div>
-        <Avatar name={profile?.display_name} imageUrl={profile?.avatar_url} />
-      </div>
-
-      <div className="px-5 pb-8 flex flex-col gap-5">
-        {profile?.show_quotes !== false && <QuotesCarousel quotes={quotes} />}
-
-        <div>
-          <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
-            Quick access
-          </h2>
-          <QuickActions />
+    <div className="min-h-screen bg-surfacedark:bg-slate-900">
+      {/* Scrollable content */}
+      <div className="page-enter">
+        <div className="px-5 pt-8 pb-4 flex items-center justify-between">
+          <div>
+            <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
+              {greeting()}, {capitalize(profile?.display_name) || "Student"}
+            </h1>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </div>
+          <Avatar name={profile?.display_name} imageUrl={profile?.avatar_url} />
         </div>
 
-        {profile?.show_streak !== false && session?.user?.id && (
+        <div className="px-5 pb-8 flex flex-col gap-5">
+          {profile?.show_quotes !== false && <QuotesCarousel quotes={quotes} />}
+
           <div>
             <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
-              Study streak
+              Quick access
             </h2>
-            <StreakCalendar userId={session.user.id} />
+            <QuickActions />
           </div>
-        )}
 
-        <div>
-          <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
-            Mindfulness
-          </h2>
-          <BreathingCard duration={profile?.mindfulness_duration || 5} />
+          {profile?.show_streak !== false && session?.user?.id && (
+            <div>
+              <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
+                Study streak
+              </h2>
+              <StreakCalendar userId={session.user.id} />
+            </div>
+          )}
+
+          <div>
+            <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
+              Mindfulness
+            </h2>
+            <BreathingCard duration={profile?.mindfulness_duration || 5} />
+          </div>
         </div>
       </div>
+
+      {/* overlays */}
       {session?.user?.id && <UrgentTaskNudge userId={session.user.id} />}
 
       <IOSInstallPrompt />

@@ -24,27 +24,29 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ toast }}>
       {children}
-      <div className="fixed top-4 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none">
-        {toasts.map((t) => (
-          <div
-            key={t.id}
-            className={`${
-              types[t.type]
-            } text-white px-5 py-3 rounded-2xl shadow-glow
+      {toasts.length > 0 && (
+        <div className="fixed top-4 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 pointer-events-none">
+          {toasts.map((t) => (
+            <div
+              key={t.id}
+              className={`${
+                types[t.type]
+              } text-white px-5 py-3 rounded-2xl shadow-glow
             flex items-center gap-3 max-w-sm w-full text-sm font-medium animate-slide-up pointer-events-auto`}
-          >
-            <span className="flex-1">{t.message}</span>
-            <button
-              onClick={() =>
-                setToasts((prev) => prev.filter((x) => x.id !== t.id))
-              }
-              className="opacity-70 hover:opacity-100 text-lg leading-none"
             >
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
+              <span className="flex-1">{t.message}</span>
+              <button
+                onClick={() =>
+                  setToasts((prev) => prev.filter((x) => x.id !== t.id))
+                }
+                className="opacity-70 hover:opacity-100 text-lg leading-none"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </ToastContext.Provider>
   );
 }
