@@ -196,6 +196,7 @@ export default function Onboarding() {
         show_quotes: true,
         show_streak: true,
         onboarding_complete: true,
+        feature_preferences: selectedFeatures,
       });
       error = result.error;
     } else {
