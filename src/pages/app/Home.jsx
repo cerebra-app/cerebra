@@ -667,7 +667,9 @@ function StreakCalendar({ userId }) {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
-  const todayStr = today.toISOString().split("T")[0];
+  const todayStr = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthName = today.toLocaleString("default", { month: "long" });
@@ -720,7 +722,13 @@ function StreakCalendar({ userId }) {
             {monthName} {year}
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            {streak > 0 ? `🔥 ${streak} day streak` : "Start your streak today"}
+            {hasCheckedToday
+              ? streak > 1
+                ? `🔥 ${streak} day streak`
+                : "🔥 Streak started!"
+              : streak > 0
+              ? `🔥 ${streak} day streak — check in to keep it`
+              : "Start your streak today"}
           </p>
         </div>
         {hasCheckedToday ? (
@@ -760,19 +768,23 @@ function StreakCalendar({ userId }) {
           )}-${String(day).padStart(2, "0")}`;
           const isToday = dateStr === todayStr;
           const isChecked = checkedDates.includes(dateStr);
-          const isPast = new Date(dateStr) < today && !isToday;
+          const isPast = dateStr < todayStr;
+          const isMissed = isPast && !isChecked;
+
           return (
             <div
               key={day}
-              className={`aspect-square flex items-center justify-center rounded-lg text-xs font-medium
-              ${isChecked ? "bg-primary-400 text-white" : ""}
-              ${
-                isToday && !isChecked
-                  ? "border-2 border-primary-400 text-primary-400"
-                  : ""
-              }
-              ${!isChecked && !isToday ? "text-slate-500" : ""}
-              ${isPast && !isChecked ? "opacity-30" : ""}`}
+              className={`aspect-square flex items-center justify-center
+      rounded-lg text-xs font-medium transition-all duration-200
+      ${isChecked ? "bg-primary-400 text-white" : ""}
+      ${
+        isToday && !isChecked
+          ? "border-2 border-primary-400 text-primary-400"
+          : ""
+      }
+      ${isMissed ? "bg-red-100 text-red-400" : ""}
+      ${!isChecked && !isToday && !isMissed ? "text-slate-400" : ""}
+    `}
             >
               {day}
             </div>
@@ -1048,39 +1060,39 @@ export default function Home() {
   const { profile, session } = useApp();
   const quotes = getDailyQuotes();
 
-  useEffect(() => {
-    if (getNotificationStatus() !== "granted") return;
-    if (!session?.user?.id) return;
+  // useEffect(() => {
+  //   if (getNotificationStatus() !== "granted") return;
+  //   if (!session?.user?.id) return;
 
-    const checkAndNotify = async () => {
-      const today = new Date().toISOString().split("T")[0];
+  //   const checkAndNotify = async () => {
+  //     const today = new Date().toISOString().split("T")[0];
 
-      const { data: dueTasks } = await supabase
-        .from("tasks")
-        .select("title")
-        .eq("user_id", session.user.id)
-        .eq("is_completed", false)
-        .eq("due_date", today)
-        .eq("priority", "high")
-        .limit(1);
+  //     const { data: dueTasks } = await supabase
+  //       .from("tasks")
+  //       .select("title")
+  //       .eq("user_id", session.user.id)
+  //       .eq("is_completed", false)
+  //       .eq("due_date", today)
+  //       .eq("priority", "high")
+  //       .limit(1);
 
-      if (dueTasks?.length > 0) {
-        new Notification("Task due today", {
-          body: dueTasks[0].title,
-          icon: "/pwa-192x192.png",
-          badge: "/favicon-32x32.png",
-          tag: "task-due",
-        });
-      }
-    };
+  //     if (dueTasks?.length > 0) {
+  //       new Notification("Task due today", {
+  //         body: dueTasks[0].title,
+  //         icon: "/pwa-192x192.png",
+  //         badge: "/favicon-32x32.png",
+  //         tag: "task-due",
+  //       });
+  //     }
+  //   };
 
-    // Only run once per session
-    const checked = sessionStorage.getItem("notif_checked");
-    if (!checked) {
-      checkAndNotify();
-      sessionStorage.setItem("notif_checked", "true");
-    }
-  }, [session?.user?.id]);
+  //   // Only run once per session
+  //   const checked = sessionStorage.getItem("notif_checked");
+  //   if (!checked) {
+  //     checkAndNotify();
+  //     sessionStorage.setItem("notif_checked", "true");
+  //   }
+  // }, [session?.user?.id]);
 
   const greeting = () => {
     const h = new Date().getHours();

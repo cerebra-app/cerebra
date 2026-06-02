@@ -98,6 +98,7 @@ export default function Settings() {
   }, [profile]);
 
   const handleEnableNotifications = async () => {
+    // console.log("Starting enable");
     setEnablingNotif(true);
 
     const permResult = await requestNotificationPermission();
@@ -120,16 +121,22 @@ export default function Settings() {
     }
 
     // Save subscription to Supabase
-    await supabase.from("push_subscriptions").upsert({
-      user_id: session.user.id,
-      subscription: subResult.subscription.toJSON(),
-      device_name: navigator.userAgent.includes("Mobile")
-        ? "Mobile"
-        : "Desktop",
-    });
+    const { error: saveError } = await supabase
+      .from("push_subscriptions")
+      .upsert({
+        user_id: session.user.id,
+        subscription: subResult.subscription.toJSON(),
+        device_name: navigator.userAgent.includes("Mobile")
+          ? "Mobile"
+          : "Desktop",
+      });
 
+    if (saveError) {
+      toast("Enabled but could not save subscription", "warning");
+    } else {
+      toast("Notifications enabled!", "success");
+    }
     setNotifStatus("granted");
-    toast("Notifications enabled!", "success");
     setEnablingNotif(false);
   };
 
@@ -278,6 +285,29 @@ export default function Settings() {
             onChange={(e) => setDisplayName(e.target.value)}
             placeholder="Your name"
           />
+          <div>
+            <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1.5">
+              Username
+            </label>
+            <div
+              className="input bg-slate-50 dark:bg-slate-700/50 text-slate-400 
+    cursor-not-allowed select-none"
+            >
+              @{profile?.username}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1.5">
+              Email
+            </label>
+            <div
+              className="input bg-slate-50 dark:bg-slate-700/50 text-slate-400 
+    cursor-not-allowed select-none"
+            >
+              {session?.user?.email}
+            </div>
+          </div>
           <Input
             label="University"
             value={university}
