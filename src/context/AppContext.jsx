@@ -25,6 +25,17 @@ export function AppProvider({ children }) {
     }
   }, []);
 
+  const [activeTaskCount, setActiveTaskCount] = useState(0);
+
+  const fetchTaskCount = useCallback(async (userId) => {
+    const { count } = await supabase
+      .from("tasks")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("is_completed", false);
+    setActiveTaskCount(count || 0);
+  }, []);
+
   const fetchProfile = useCallback(
     async (userId) => {
       setProfileLoading(true);
@@ -39,6 +50,7 @@ export function AppProvider({ children }) {
           setProfile(null);
         } else if (data) {
           setProfile(data);
+          fetchTaskCount(userId);
           applyTheme(data.theme || "light");
         }
       } catch (err) {
@@ -120,6 +132,9 @@ export function AppProvider({ children }) {
         profile,
         loading,
         profileLoading,
+        activeTaskCount,
+        refreshTaskCount: () =>
+          session?.user?.id && fetchTaskCount(session.user.id),
         isAuthenticated: !!session,
         needsOnboarding:
           !!session &&

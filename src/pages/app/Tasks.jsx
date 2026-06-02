@@ -120,6 +120,7 @@ function TaskForm({ onSave, onCancel, initial = {} }) {
     }
     setLoading(true);
     await onSave(form);
+    // await fetchTasks();
     setLoading(false);
   };
 
@@ -351,7 +352,7 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
 }
 
 export default function Tasks() {
-  const { session } = useApp();
+  const { session, refreshTaskCount } = useApp();
   const toast = useToast();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -392,6 +393,7 @@ export default function Tasks() {
     setTasks((prev) => [data, ...prev]);
     setShowForm(false);
     toast("Task added", "success");
+    refreshTaskCount();
   };
 
   const handleEdit = async (form) => {
@@ -422,6 +424,7 @@ export default function Tasks() {
       return;
     }
     setTasks((prev) => prev.map((t) => (t.id === data.id ? data : t)));
+    refreshTaskCount();
   };
 
   const handleDelete = async (id) => {
@@ -433,6 +436,7 @@ export default function Tasks() {
     setTasks((prev) => prev.filter((t) => t.id !== id));
     setDeleteConfirm(null);
     toast("Task deleted", "success");
+    refreshTaskCount();
   };
 
   const filtered = tasks.filter((t) => {
@@ -494,6 +498,7 @@ export default function Tasks() {
             <div className="flex-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 p-3 text-center shadow-card">
               <p className="font-display font-bold text-lg text-slate-700 dark:text-slate-200">
                 {activeTasks.length}
+                {/* {console.log(activeTasks.length)} */}
               </p>
               <p className="text-[10px] text-slate-400 font-medium">Active</p>
             </div>

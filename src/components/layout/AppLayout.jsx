@@ -1,6 +1,10 @@
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
 import { NavLink, useLocation } from "react-router-dom";
+import { useApp } from "../../context/AppContext";
+import { useToast } from "../../context/ToastContext";
 
-const navItems = [
+const navItems = (activeTaskCount) => [
   {
     to: "/app/home",
     label: "Home",
@@ -25,20 +29,32 @@ const navItems = [
     to: "/app/tasks",
     label: "Tasks",
     icon: (a) => (
-      <svg
-        width="22"
-        height="22"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={a ? 2.2 : 1.8}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-        />
-      </svg>
+      <div className="relative">
+        <svg
+          width="22"
+          height="22"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={a ? 2.2 : 1.8}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+          />
+        </svg>
+
+        {activeTaskCount > 0 && (
+          <span
+            className="absolute -top-2 -right-2 flex h-5 min-w-5
+            items-center justify-center rounded-full bg-red-500
+            px-1 text-[10px] font-bold text-white"
+          >
+            {activeTaskCount}
+          </span>
+        )}
+      </div>
     ),
   },
   {
@@ -85,42 +101,45 @@ const navItems = [
 
 export default function AppLayout({ children }) {
   const location = useLocation();
+  const { activeTaskCount } = useApp();
+  const navigationItems = navItems(activeTaskCount);
+
   return (
     <div className="page-container">
-      <main className="bottom-nav-height overflow-y-auto scrollbar-hide bg-surfacedark:bg-slate-900">
+      <main className="bottom-nav-height overflow-y-auto scrollbar-hide bg-surface dark:bg-slate-900">
         {children}
       </main>
       <nav
         className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md
-  bg-white/90dark:bg-slate-900/90 backdrop-blur-md
-  border-t border-slate-100 dark:border-slate-800 z-40"
+        bg-white/90 dark:bg-slate-900/90 backdrop-blur-md
+        border-t border-slate-100 dark:border-slate-800 z-40"
       >
         <div className="flex items-center justify-around px-2 py-2">
-          {navItems.map(({ to, label, icon }) => {
+          {navigationItems.map(({ to, label, icon }) => {
             const active = location.pathname.startsWith(to);
             return (
               <NavLink
                 key={to}
                 to={to}
                 className="relative flex flex-col items-center gap-0.5 px-4 py-1.5
-    rounded-2xl transition-all duration-200 min-w-[60px]"
+                  rounded-2xl transition-all duration-200 min-w-[60px]"
               >
                 <span
                   className={`transition-colors duration-200
-    ${active ? "text-primary-400" : "text-slate-400"}`}
+                  ${active ? "text-primary-400" : "text-slate-400"}`}
                 >
                   {icon(active)}
                 </span>
                 <span
                   className={`text-[10px] font-medium transition-colors duration-200
-    ${active ? "text-primary-400" : "text-slate-400"}`}
+                  ${active ? "text-primary-400" : "text-slate-400"}`}
                 >
                   {label}
                 </span>
                 {active && (
                   <span
                     className="absolute bottom-0 w-6 h-0.5 rounded-full bg-primary-400
-      shadow-[0_0_6px_2px_rgba(124,111,247,0.5)]"
+                    shadow-[0_0_6px_2px_rgba(124,111,247,0.5)]"
                   />
                 )}
               </NavLink>
