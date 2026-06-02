@@ -177,7 +177,7 @@ export default function Onboarding() {
       .eq("id", session.user.id)
       .single();
 
-    const { error } = await updateProfile({
+    let { error } = await updateProfile({
       display_name: displayName.trim(),
       university: university.trim(),
       theme: "light",
