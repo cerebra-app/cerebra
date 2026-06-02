@@ -177,7 +177,17 @@ export default function Onboarding() {
       .eq("id", session.user.id)
       .single();
 
-    let error;
+    const { error } = await updateProfile({
+      display_name: displayName.trim(),
+      university: university.trim(),
+      theme: "light",
+      show_quotes: true,
+      show_streak: true,
+      onboarding_complete: true,
+      feature_preferences: selectedFeatures,
+    });
+
+    // let error;
     if (existing) {
       const result = await updateProfile({
         display_name: displayName.trim(),

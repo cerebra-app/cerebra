@@ -522,6 +522,24 @@ function IconResources() {
     </svg>
   );
 }
+function IconDocuments() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      />
+    </svg>
+  );
+}
 function IconSupport() {
   return (
     <svg
@@ -631,27 +649,60 @@ function QuotesCarousel({ quotes }) {
   );
 }
 
-function QuickActions() {
+function QuickActions({ preferences = [] }) {
+  const allActions = {
+    tasks: { to: "/app/tasks", icon: <IconTasks />, label: "Tasks" },
+    journal: { to: "/app/journal", icon: <IconJournal />, label: "Journal" },
+    resources: {
+      to: "/app/resources",
+      icon: <IconResources />,
+      label: "Resources",
+    },
+    documents: {
+      to: "/app/documents",
+      icon: <IconDocuments />,
+      label: "Documents",
+    },
+    quiz: { to: "/app/quiz", icon: <IconQuiz />, label: "Quiz" },
+    counselor: {
+      to: "/app/counselor",
+      icon: <IconSupport />,
+      label: "Support",
+    },
+  };
+
+  // Tasks is always first, Support always last
+  // Middle two slots filled by user preferences, fallback to journal + resources
+  const preferred = preferences
+    .filter((p) => ["journal", "resources", "documents", "quiz"].includes(p))
+    .slice(0, 2);
+
+  const middle =
+    preferred.length === 2
+      ? preferred
+      : preferred.length === 1
+      ? [preferred[0], preferred[0] === "journal" ? "resources" : "journal"]
+      : ["journal", "resources"];
+
   const actions = [
-    { to: "/app/tasks", icon: <IconTasks />, label: "Tasks" },
-    { to: "/app/journal", icon: <IconJournal />, label: "Journal" },
-    { to: "/app/resources", icon: <IconResources />, label: "Resources" },
-    { to: "/app/counselor", icon: <IconSupport />, label: "Support" },
+    allActions.tasks,
+    ...middle.map((p) => allActions[p] || allActions.journal),
+    allActions.counselor,
   ];
+
   return (
     <div className="grid grid-cols-4 gap-3">
       {actions.map((a) => (
         <Link
           key={a.to}
           to={a.to}
-          className="flex flex-col items-center gap-2 bg-white dark:bg-slate-800 rounded-2xl p-3
-    border border-slate-100 dark:border-slate-700 shadow-card hover:shadow-glow
-    transition-all duration-200 active:scale-95 text-slate-500 dark:text-slate-400"
+          className="flex flex-col items-center gap-2 bg-white dark:bg-slate-800
+            rounded-2xl p-3 border border-slate-100 dark:border-slate-700 shadow-card
+            hover:shadow-glow transition-all duration-200 active:scale-95
+            text-slate-500 dark:text-slate-400"
         >
           {a.icon}
-          <span className="text-[10px] font-medium text-slate-500">
-            {a.label}
-          </span>
+          <span className="text-[10px] font-medium">{a.label}</span>
         </Link>
       ))}
     </div>
@@ -1128,7 +1179,7 @@ export default function Home() {
             <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
               Quick access
             </h2>
-            <QuickActions />
+            <QuickActions preferences={profile?.feature_preferences || []} />
           </div>
 
           {profile?.show_streak !== false && session?.user?.id && (
