@@ -710,7 +710,7 @@ function QuickActions({ preferences = [] }) {
 }
 
 // ── Streak Calendar ──────────────────────────────────────────────────────
-function StreakCalendar({ userId }) {
+function StreakCalendar({ userId, accountCreated }) {
   const [checkedDates, setCheckedDates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkingIn, setCheckingIn] = useState(false);
@@ -725,6 +725,9 @@ function StreakCalendar({ userId }) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthName = today.toLocaleString("default", { month: "long" });
   const hasCheckedToday = checkedDates.includes(todayStr);
+  const accountCreatedStr = accountCreated
+    ? new Date(accountCreated).toISOString().split("T")[0]
+    : todayStr;
 
   const streak = (() => {
     let count = 0;
@@ -820,7 +823,14 @@ function StreakCalendar({ userId }) {
           const isToday = dateStr === todayStr;
           const isChecked = checkedDates.includes(dateStr);
           const isPast = dateStr < todayStr;
-          const isMissed = isPast && !isChecked;
+          // Get account creation date
+          // const accountCreated = session?.user?.created_at
+          //   ? new Date(session.user.created_at).toISOString().split("T")[0]
+          //   : todayStr;
+
+          // Then update isMissed:
+          // const isMissed = isPast && !isChecked && dateStr >= accountCreated;
+          const isMissed = isPast && !isChecked && dateStr >= accountCreatedStr;
 
           return (
             <div
@@ -1187,7 +1197,10 @@ export default function Home() {
               <h2 className="font-display text-sm font-semibold text-slate-600 mb-3">
                 Study streak
               </h2>
-              <StreakCalendar userId={session.user.id} />
+              <StreakCalendar
+                userId={session.user.id}
+                accountCreated={session?.user?.created_at}
+              />
             </div>
           )}
 

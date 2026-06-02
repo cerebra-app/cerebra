@@ -529,14 +529,9 @@ export default function Settings() {
           <>
             <SettingsRow
               label="Notifications enabled"
-              sublabel="You'll receive reminders and updates"
+              sublabel="To disable, go to your phone's Settings → Apps → Cerebra → Notifications"
             >
-              <button
-                onClick={handleDisableNotifications}
-                className="text-xs text-red-400 font-medium hover:text-red-500 transition-colors"
-              >
-                Disable
-              </button>
+              <span className="text-xs text-teal-500 font-medium">Active</span>
             </SettingsRow>
             <Divider />
             <SettingsRow
