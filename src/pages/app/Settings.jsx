@@ -618,7 +618,7 @@ export default function Settings() {
       </div>
 
       {/* Danger zone */}
-      <div
+      {/* <div
         className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-4 overflow-hidden 
   border border-slate-100 dark:border-slate-700 shadow-card"
       >
@@ -663,7 +663,7 @@ export default function Settings() {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* About */}
       <div className="px-5 pt-6 text-center">
