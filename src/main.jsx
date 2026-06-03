@@ -5,10 +5,15 @@ import App from "./App.jsx";
 
 // Apply saved theme before render
 const saved = localStorage.getItem("cerebra_theme");
-if (saved === "dark") document.documentElement.classList.add("dark");
-else if (saved === "light") document.documentElement.classList.remove("dark");
-else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+if (saved === "dark") {
   document.documentElement.classList.add("dark");
+} else if (saved === "light") {
+  document.documentElement.classList.remove("dark");
+} else {
+  // system — respect OS preference
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.classList.add("dark");
+  }
 }
 
 // Fix mobile viewport height

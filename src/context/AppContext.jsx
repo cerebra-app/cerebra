@@ -20,8 +20,15 @@ export function AppProvider({ children }) {
     localStorage.setItem("cerebra_theme", theme);
     if (theme === "dark") {
       root.classList.add("dark");
-    } else {
+    } else if (theme === "light") {
       root.classList.remove("dark");
+    } else {
+      // system
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
     }
   }, []);
 

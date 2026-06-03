@@ -948,7 +948,7 @@ function BreathingCard({ duration = 5 }) {
     )}`;
 
   // Progress ring
-  const radius = 54;
+  const radius = 84;
   const circumference = 2 * Math.PI * radius;
   const phaseDuration = PHASE_CONFIG[phase]?.duration || 4;
   const phaseProgress =
@@ -1018,58 +1018,126 @@ function BreathingCard({ duration = 5 }) {
         </div>
       )}
 
-      {/* Running state */}
       {status === "running" && (
         <div className="flex flex-col items-center py-2 gap-3">
-          {/* Progress ring */}
-          <div className="relative w-32 h-32">
-            <svg width="128" height="128" className="-rotate-90">
-              <circle
-                cx="64"
-                cy="64"
-                r={radius}
-                fill="none"
-                stroke="#F0EFFE"
-                strokeWidth="8"
+          {/* Phase indicator pills */}
+          <div className="flex items-center gap-2">
+            {["inhale", "hold", "exhale"].map((p) => (
+              <div
+                key={p}
+                className={`h-1 rounded-full transition-all duration-500
+          ${
+            phase === p
+              ? "w-8 bg-primary-400"
+              : "w-2 bg-slate-200 dark:bg-slate-600"
+          }`}
               />
+            ))}
+          </div>
+
+          {/* Progress ring */}
+          <div className="relative w-48 h-48">
+            {/* Outer glow when active */}
+            <div
+              className={`absolute inset-0 rounded-full transition-all duration-1000
+        ${
+          phase === "inhale"
+            ? "shadow-[0_0_30px_rgba(124,111,247,0.2)]"
+            : phase === "hold"
+            ? "shadow-[0_0_30px_rgba(78,205,196,0.2)]"
+            : "shadow-[0_0_30px_rgba(160,144,249,0.2)]"
+        }`}
+            />
+
+            <svg width="192" height="192" className="-rotate-90">
+              {/* Background track */}
               <circle
-                cx="64"
-                cy="64"
-                r={radius}
+                cx="96"
+                cy="96"
+                r="84"
+                fill="none"
+                stroke="currentColor"
+                className="text-primary-50 dark:text-slate-700"
+                strokeWidth="6"
+              />
+              {/* Progress arc */}
+              <circle
+                cx="96"
+                cy="96"
+                r="84"
                 fill="none"
                 stroke={ringColor[phase]}
-                strokeWidth="8"
+                strokeWidth="6"
                 strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
+                strokeDasharray={2 * Math.PI * 84}
+                strokeDashoffset={2 * Math.PI * 84 * (1 - phaseProgress)}
                 style={{
-                  transition: "stroke-dashoffset 1s linear, stroke 0.5s ease",
+                  transition: "stroke-dashoffset 1s linear, stroke 0.6s ease",
                 }}
               />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-display font-bold text-2xl text-slate-700">
+
+            {/* Inner content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+              {/* Phase label */}
+              <span
+                className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1
+          transition-colors duration-500
+          ${
+            phase === "inhale"
+              ? "text-primary-400"
+              : phase === "hold"
+              ? "text-teal-400"
+              : "text-primary-300"
+          }`}
+              >
+                {PHASE_CONFIG[phase].label}
+              </span>
+
+              {/* Countdown */}
+              <span
+                className="font-display font-bold text-5xl text-slate-700
+          dark:text-slate-100 leading-none mb-2"
+                style={{ fontVariantNumeric: "tabular-nums" }}
+              >
                 {phaseCount}
               </span>
-              <span className="text-xs font-medium text-primary-400">
-                {PHASE_CONFIG[phase].label}
+
+              {/* Instruction */}
+              <span
+                className="text-[11px] text-slate-400 dark:text-slate-500
+          leading-relaxed max-w-[120px]"
+              >
+                {PHASE_CONFIG[phase].instruction}
               </span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-400 text-center max-w-[200px] leading-relaxed">
-            {PHASE_CONFIG[phase].instruction}
-          </p>
-
-          <div className="flex items-center gap-4 text-xs text-slate-400">
-            <span>
-              {cycles} cycle{cycles !== 1 ? "s" : ""} complete
-            </span>
+          {/* Session progress bar */}
+          <div className="w-full px-2">
+            <div className="w-full bg-primary-50 dark:bg-slate-700 rounded-full h-1">
+              <div
+                className="bg-primary-400 h-1 rounded-full transition-all duration-1000"
+                style={{
+                  width: `${
+                    ((SESSION_DURATION - sessionLeft) / SESSION_DURATION) * 100
+                  }%`,
+                }}
+              />
+            </div>
+            <div className="flex justify-between mt-1.5">
+              <span className="text-[10px] text-slate-400">
+                {cycles} cycle{cycles !== 1 ? "s" : ""}
+              </span>
+              <span className="text-[10px] text-slate-400 tabular-nums">
+                {formatTime(sessionLeft)} left
+              </span>
+            </div>
           </div>
 
           <button
             onClick={reset}
-            className="text-xs text-slate-400 hover:text-red-400 transition-colors mt-1"
+            className="text-xs text-slate-400 hover:text-red-400 transition-colors py-1"
           >
             End session
           </button>

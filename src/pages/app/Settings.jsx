@@ -224,6 +224,21 @@ export default function Settings() {
     await updateProfile({ [field]: value });
   };
 
+  const [signingOutAll, setSigningOutAll] = useState(false);
+  // const [allDevicesSignout, setAllDevicessignout] = useState(false);
+  const [signingOutAllLoading, setsigningOutAllLoading] = useState(false);
+
+  const handleSignOutAllDevices = async () => {
+    setSigningOutAll(true);
+    const { error } = await supabase.auth.signOut({ scope: "global" });
+    setSigningOutAll(false);
+    if (error) {
+      toast("Could not sign out all devices", "error");
+    } else {
+      navigate("/");
+    }
+  };
+
   const handleDeleteAccount = async () => {
     setDeleteLoading(true);
     // Delete all user data
@@ -615,6 +630,55 @@ export default function Settings() {
             </Button>
           </div>
         )}
+      </div>
+
+      {/* sign-out of all devices */}
+      <div
+        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-4 overflow-hidden 
+  border border-slate-100 dark:border-slate-700 shadow-card"
+      >
+        <SectionLabel label="Sign out of all devices" />
+        <div className="px-5 pb-4 pt-2 border-slate-100 dark:border-slate-700">
+          {!signingOutAll ? (
+            <button
+              variant="ghost"
+              size="md"
+              onClick={() => setSigningOutAll(true)}
+              className="w-full py-3 rounded-2xl border border-white-200 
+                text-sm font-medium transition-all hover:text-purple-700 hover:bg-white active:scale-[0.99]"
+            >
+              Sign out of all devices
+            </button>
+          ) : (
+            <div className="bg-red-50 rounded-2xl p-4">
+              <p className="text-sm font-medium text-red-700 mb-1">
+                Are you sure?
+              </p>
+              <p className="text-xs text-red-400 mb-4">
+                This will sign you out on every browser and device
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => setSigningOutAll(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="flex-1"
+                  loading={signingOutAllLoading}
+                  onClick={handleSignOutAllDevices}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Danger zone */}
