@@ -532,9 +532,9 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Notifications placeholder */}
       {/* Notifications */}
-      <div
+      {/* cron push notification */}
+      {/* <div
         className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden
   border border-slate-100 dark:border-slate-700 shadow-card"
       >
@@ -629,6 +629,55 @@ export default function Settings() {
               Enable notifications
             </Button>
           </div>
+        )}
+      </div> */}
+
+      {/* push notification on app open */}
+      <div
+        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden
+  border border-slate-100 dark:border-slate-700 shadow-card"
+      >
+        <SectionLabel label="Notifications" />
+
+        {notifStatus === "denied" ? (
+          <div className="px-5 py-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Notifications are blocked. Enable them in your phone's Settings →
+              Apps → Cerebra → Notifications.
+            </p>
+          </div>
+        ) : notifStatus !== "granted" ? (
+          <div className="px-5 py-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              Get reminders when you have pending tasks.
+            </p>
+            <Button
+              size="md"
+              loading={enablingNotif}
+              onClick={handleEnableNotifications}
+            >
+              Enable notifications
+            </Button>
+          </div>
+        ) : (
+          <>
+            <SettingsRow
+              label="Notifications enabled"
+              sublabel="To disable, go to Settings → Apps → Cerebra → Notifications"
+            >
+              <span className="text-xs text-teal-500 font-medium">Active</span>
+            </SettingsRow>
+            <Divider />
+            <SettingsRow
+              label="Task reminders"
+              sublabel="Reminded of pending tasks when you open the app"
+            >
+              <Toggle
+                checked={profile?.notif_task_due !== false}
+                onChange={(v) => handleToggle("notif_task_due", v)}
+              />
+            </SettingsRow>
+          </>
         )}
       </div>
 
