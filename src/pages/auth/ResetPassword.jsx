@@ -58,9 +58,16 @@ export default function ResetPassword() {
             placeholder="Repeat your password"
             autoComplete="new-password"
           />
-          <Button size="lg" loading={loading} type="submit" className="mt-2">
-            Update password
-          </Button>
+          <div className="space-y-1">
+            <Button size="lg" loading={loading} type="submit">
+              Update password
+            </Button>
+
+            <p className="text-center text-xs text-slate-500">
+              To stay secure, Sign out of all devices after updating your
+              password.
+            </p>
+          </div>
         </form>
       </div>
     </div>
