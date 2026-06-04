@@ -1223,6 +1223,37 @@ export default function Home() {
   //   }
   // }, [session?.user?.id]);
 
+  useEffect(() => {
+    if (getNotificationStatus() !== "granted") return;
+    if (!session?.user?.id) return;
+    if (profile?.notif_task_due === false) return;
+
+    const checkAndNotify = async () => {
+      const checked = sessionStorage.getItem("task_notif_shown");
+      if (checked) return; // only once per session
+
+      const { data: tasks } = await supabase
+        .from("tasks")
+        .select("id")
+        .eq("user_id", session.user.id)
+        .eq("is_completed", false)
+        .limit(1);
+
+      if (tasks?.length > 0) {
+        new Notification("You have pending tasks", {
+          body: "Open Cerebra to stay on track.",
+          icon: "/pwa-192x192.png",
+          badge: "/favicon-32x32.png",
+          tag: "task-reminder",
+        });
+        sessionStorage.setItem("task_notif_shown", "true");
+      }
+    };
+
+    // Small delay so app loads first
+    setTimeout(checkAndNotify, 2000);
+  }, [session?.user?.id, profile?.notif_task_due]);
+
   const greeting = () => {
     const h = new Date().getHours();
     if (h < 12) return "Good morning";
