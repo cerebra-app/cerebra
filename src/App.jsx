@@ -28,6 +28,8 @@ const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Resources = lazy(() => import("./pages/app/Resources"));
 const Documents = lazy(() => import("./pages/app/Documents"));
+const Timetable = lazy(() => import("./pages/app/Timetable"));
+const Flashcards = lazy(() => import("./pages/app/Flashcards"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
 
@@ -119,18 +121,11 @@ function AppRoutes() {
                   <Route path="settings" element={<Settings />} />
                   <Route path="resources" element={<Resources />} />
                   <Route path="documents" element={<Documents />} />
-                  <Route
-                    path="timetable"
-                    element={<ComingSoon feature="timetable" />}
-                  />
+                  <Route path="timetable" element={<Timetable />} />
                   <Route path="quiz" element={<ComingSoon feature="quiz" />} />
                   <Route
                     path="flashcards"
-                    element={<ComingSoon feature="flashcards" />}
-                  />
-                  <Route
-                    path="documents"
-                    element={<ComingSoon feature="documents" />}
+                    element={<Flashcards />}
                   />
                   <Route
                     path="peer-chat"

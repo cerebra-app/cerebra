@@ -274,7 +274,7 @@ function TaskItem({ task, onToggle, onEdit, onDelete }) {
             ${
               task.is_completed
                 ? "line-through text-slate-400"
-                : "text-slate-700"
+                : "text-slate-700 dark:text-slate-200"
             }`}
           >
             {task.title}
@@ -464,7 +464,7 @@ export default function Tasks() {
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-1">
-          <h1 className="font-display text-xl font-bold text-slate-800">
+          <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
             Tasks
           </h1>
           <button
@@ -566,7 +566,7 @@ export default function Tasks() {
               ${
                 categoryFilter === "all"
                   ? "bg-slate-700 text-white"
-                  : "bg-white text-slate-500 border border-slate-100"
+                  : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-700"
               }`}
           >
             All

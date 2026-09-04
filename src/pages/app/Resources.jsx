@@ -18,7 +18,7 @@ export default function Resources() {
     <div className="min-h-screen bg-surfacedark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
-        <h1 className="font-display text-xl font-bold text-slate-800">
+        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
           Free E-Resources
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
@@ -75,7 +75,7 @@ export default function Resources() {
                 />
               </svg>
             </div>
-            <p className="font-display font-semibold text-slate-700 mb-1">
+            <p className="font-display font-semibold text-slate-700 dark:text-slate-200 mb-1">
               No results
             </p>
             <p className="text-sm text-slate-400">Nothing matches "{search}"</p>

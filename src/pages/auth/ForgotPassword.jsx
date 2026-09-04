@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import { CerebraLockup } from "../../components/ui/Logo";
+import { ThalaLockup } from "../../components/ui/Logo";
 import { Button, Input } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
@@ -51,11 +51,11 @@ export default function ForgotPassword() {
         </Link>
       </div>
       <div className="flex-1 flex flex-col animate-slide-up">
-        <CerebraLockup height={36} className="mb-8" />
+        <ThalaLockup height={36} className="mb-8" />
         {sent ? (
           <div className="card text-center py-10 animate-fade-in">
             <div className="text-4xl mb-4">📬</div>
-            <h2 className="font-display font-semibold text-slate-700 mb-2">
+            <h2 className="font-display font-semibold text-slate-700 dark:text-slate-200 mb-2">
               Check your inbox
             </h2>
             <p className="text-sm text-slate-400">
@@ -71,7 +71,7 @@ export default function ForgotPassword() {
           </div>
         ) : (
           <>
-            <h1 className="font-display text-2xl font-bold text-slate-800 mb-1">
+            <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-1">
               Forgot password?
             </h1>
             <p className="text-slate-400 text-sm mb-8">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import { CerebraLockup } from "../../components/ui/Logo";
+import { ThalaLockup } from "../../components/ui/Logo";
 import { Button, PasswordInput } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
@@ -36,7 +36,7 @@ export default function ResetPassword() {
     <div className=" page-container full-height flex flex-col px-6 safe-top overflow-y-auto page-enter">
       <div className="pt-5 pb-8" />
       <div className="flex-1 flex flex-col animate-slide-up">
-        <CerebraLockup height={36} className="mb-8" />
+        <ThalaLockup height={36} className="mb-8" />
         <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-1">
           Set new password
         </h1>

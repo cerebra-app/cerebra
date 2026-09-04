@@ -282,7 +282,7 @@ export default function Settings() {
             />
           </svg>
         </button>
-        <h1 className="font-display text-xl font-bold text-slate-800">
+        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
           Settings
         </h1>
       </div>
@@ -378,6 +378,18 @@ export default function Settings() {
           <Button size="md" loading={savingProfile} onClick={handleSaveProfile}>
             Save profile
           </Button>
+        </div>
+      </div>
+
+      {/* Quick access */}
+      <div className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden border border-slate-100 dark:border-slate-700 shadow-card">
+        <SectionLabel label="Quick access" />
+        <div className="px-5 pb-4">
+          <p className="text-xs text-slate-400 mb-4">
+            Choose up to 2 shortcuts to show on your Home screen. Tasks and
+            Support are always shown.
+          </p>
+          <QuickAccessPicker profile={profile} updateProfile={updateProfile} toast={toast} />
         </div>
       </div>
 
@@ -544,7 +556,7 @@ export default function Settings() {
           <>
             <SettingsRow
               label="Notifications enabled"
-              sublabel="To disable, go to your phone's Settings → Apps → Cerebra → Notifications"
+              sublabel="To disable, go to your phone's Settings → Apps → Thala → Notifications"
             >
               <span className="text-xs text-teal-500 font-medium">Active</span>
             </SettingsRow>
@@ -643,7 +655,7 @@ export default function Settings() {
           <div className="px-5 py-4">
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Notifications are blocked. Enable them in your phone's Settings →
-              Apps → Cerebra → Notifications.
+              Apps → Thala → Notifications.
             </p>
           </div>
         ) : notifStatus !== "granted" ? (
@@ -663,7 +675,7 @@ export default function Settings() {
           <>
             <SettingsRow
               label="Notifications enabled"
-              sublabel="To disable, go to Settings → Apps → Cerebra → Notifications"
+              sublabel="To disable, go to Settings → Apps → Thala → Notifications"
             >
               <span className="text-xs text-teal-500 font-medium">Active</span>
             </SettingsRow>
@@ -693,8 +705,8 @@ export default function Settings() {
               variant="ghost"
               size="md"
               onClick={() => setSigningOutAll(true)}
-              className="w-full py-3 rounded-2xl border border-white-200 
-                text-sm font-medium transition-all hover:text-purple-700 hover:bg-white active:scale-[0.99]"
+              className="w-full py-3 rounded-2xl border border-slate-200 dark:border-slate-700
+                text-sm font-medium transition-all hover:text-primary-700 hover:bg-white dark:hover:bg-slate-700 active:scale-[0.99]"
             >
               Sign out of all devices
             </button>
@@ -780,7 +792,7 @@ export default function Settings() {
 
       {/* About */}
       <div className="px-5 pt-6 text-center">
-        <p className="text-xs text-slate-400">Cerebra · Version 1.0.0</p>
+        <p className="text-xs text-slate-400">Thala · Version 1.0.0</p>
         <div className="flex items-center justify-center gap-3 mt-2">
           <Link
             to="/privacy"
@@ -797,6 +809,64 @@ export default function Settings() {
           </Link>
         </div>
       </div>
+    </div>
+  );
+}
+
+const QUICK_ACCESS_OPTIONS = [
+  { id: "journal", label: "Journal" },
+  { id: "resources", label: "Resources" },
+  { id: "documents", label: "Documents" },
+  { id: "quiz", label: "Quiz" },
+  { id: "timetable", label: "Timetable" },
+  { id: "flashcards", label: "Flashcards" },
+];
+
+function QuickAccessPicker({ profile, updateProfile, toast }) {
+  const initial = (profile?.feature_preferences || []).filter((p) =>
+    QUICK_ACCESS_OPTIONS.some((o) => o.id === p)
+  );
+  const [selected, setSelected] = useState(initial);
+  const [saving, setSaving] = useState(false);
+
+  const toggle = (id) => {
+    setSelected((prev) => {
+      if (prev.includes(id)) return prev.filter((p) => p !== id);
+      if (prev.length >= 2) {
+        toast("You can only pick 2 — remove one first", "error");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    const { error } = await updateProfile({ feature_preferences: selected });
+    setSaving(false);
+    if (error) toast("Could not save quick access", "error");
+    else toast("Quick access updated", "success");
+  };
+
+  return (
+    <div>
+      {QUICK_ACCESS_OPTIONS.map((opt) => (
+        <div
+          key={opt.id}
+          className="flex items-center justify-between py-2.5 border-b border-slate-50 dark:border-slate-700 last:border-0"
+        >
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            {opt.label}
+          </span>
+          <Toggle
+            checked={selected.includes(opt.id)}
+            onChange={() => toggle(opt.id)}
+          />
+        </div>
+      ))}
+      <Button size="sm" className="mt-4" loading={saving} onClick={handleSave}>
+        Save quick access
+      </Button>
     </div>
   );
 }

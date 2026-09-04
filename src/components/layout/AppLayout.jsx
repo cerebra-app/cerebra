@@ -139,7 +139,7 @@ export default function AppLayout({ children }) {
                 {active && (
                   <span
                     className="absolute bottom-0 w-6 h-0.5 rounded-full bg-primary-400
-                    shadow-[0_0_6px_2px_rgba(124,111,247,0.5)]"
+                    shadow-[0_0_6px_2px_rgba(41,96,241,0.5)]"
                   />
                 )}
               </NavLink>

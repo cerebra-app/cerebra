@@ -9,10 +9,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
       manifest: {
-        name: "Cerebra",
-        short_name: "Cerebra",
+        name: "Thala",
+        short_name: "Thala",
         description: "Your calm companion for university life",
-        theme_color: "#7C6FF7",
+        theme_color: "#2960F1",
         background_color: "#FAFAFA",
         display: "standalone",
         orientation: "portrait",

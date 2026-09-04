@@ -6,16 +6,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: "#F0EFFE",
-          100: "#DDD9FD",
-          200: "#C0B8FB",
-          300: "#A090F9",
-          400: "#7C6FF7",
-          500: "#5D4EE8",
-          600: "#4737CC",
-          700: "#3328A0",
-          800: "#221B74",
-          900: "#130F48",
+          50: "#F0F4FE",
+          100: "#DDE6FD",
+          200: "#B4C7FA",
+          300: "#7A9CF6",
+          400: "#2960F1",
+          500: "#2452CA",
+          600: "#1E429E",
+          700: "#193273",
+          800: "#14254E",
+          900: "#101A31",
         },
         teal: {
           300: "#7EEAE4",
@@ -48,9 +48,9 @@ export default {
         "4xl": "2rem",
       },
       boxShadow: {
-        soft: "0 2px 20px rgba(124,111,247,0.08)",
+        soft: "0 2px 20px rgba(41,96,241,0.08)",
         card: "0 4px 24px rgba(0,0,0,0.06)",
-        glow: "0 0 24px rgba(124,111,247,0.18)",
+        glow: "0 0 24px rgba(41,96,241,0.18)",
       },
       animation: {
         "fade-in": "fadeIn 0.4s ease-out",

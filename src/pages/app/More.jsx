@@ -85,7 +85,7 @@ export default function More() {
     <div className="min-h-screen bg-surfacedark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
-        <h1 className="font-display text-xl font-bold text-slate-800">More</h1>
+        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">More</h1>
       </div>
 
       {/* Profile card */}
@@ -188,7 +188,6 @@ export default function More() {
         <MoreRow
           to="/app/timetable"
           label="Timetable planner"
-          badge="Coming soon"
           icon={
             <svg
               width="18"
@@ -232,7 +231,6 @@ export default function More() {
         <MoreRow
           to="/app/flashcards"
           label="Flashcards"
-          badge="Coming soon"
           icon={
             <svg
               width="18"
@@ -339,7 +337,7 @@ export default function More() {
           label="Send feedback"
           onClick={() =>
             window.open(
-              "mailto:mycerebra@gmail.com?subject=Cerebra Feedback",
+              "mailto:mycerebra@gmail.com?subject=Thala Feedback",
               "_blank"
             )
           }
@@ -386,7 +384,7 @@ export default function More() {
 
       {/* About */}
       <div className="px-5 py-6 text-center">
-        <p className="text-xs text-slate-400">Cerebra · Version 1.0.0</p>
+        <p className="text-xs text-slate-400">Thala · Version 1.0.0</p>
         <div className="flex items-center justify-center gap-3 mt-2">
           <Link
             to="/privacy"

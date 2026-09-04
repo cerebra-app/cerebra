@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { CerebraLockup } from "../components/ui/Logo";
+import { ThalaLockup } from "../components/ui/Logo";
 
 export default function NotFound() {
   return (
     <div className="page-container min-h-screen flex flex-col items-center justify-center px-6 text-center">
-      <CerebraLockup height={36} className="mb-10" />
+      <ThalaLockup height={36} className="mb-10" />
       <p className="text-7xl font-display font-bold text-primary-100 mb-2">
         404
       </p>
-      <h1 className="font-display text-xl font-semibold text-slate-700 mb-2">
+      <h1 className="font-display text-xl font-semibold text-slate-700 dark:text-slate-200 mb-2">
         Page not found
       </h1>
       <p className="text-sm text-slate-400 mb-8 max-w-xs">

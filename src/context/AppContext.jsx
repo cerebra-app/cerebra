@@ -17,7 +17,7 @@ export function AppProvider({ children }) {
 
   const applyTheme = useCallback((theme) => {
     const root = document.documentElement;
-    localStorage.setItem("cerebra_theme", theme);
+    localStorage.setItem("thala_theme", theme);
     if (theme === "dark") {
       root.classList.add("dark");
     } else if (theme === "light") {

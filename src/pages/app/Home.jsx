@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { supabase } from "../../lib/supabase";
 import { Card, Skeleton } from "../../components/ui/index";
-import { CerebraWordmark } from "../../components/ui/Logo";
+import { ThalaWordmark } from "../../components/ui/Logo";
 import { getDailyQuotes } from "../../lib/quotes";
 import { capitalize } from "../../lib/utils";
 import { getNotificationStatus } from "../../lib/notifications";
@@ -247,7 +247,7 @@ function IOSInstallPrompt() {
           </div>
           <div className="flex-1">
             <p className="text-sm font-medium text-white mb-1">
-              Install Cerebra
+              Install Thala
             </p>
             <p className="text-xs text-slate-400 leading-relaxed">
               Tap the <span className="text-white font-medium">Share</span>{" "}
@@ -420,7 +420,7 @@ function Avatar({ name, imageUrl }) {
               {capitalize(name)}
             </p>
             <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
-              Cerebra account
+              Thala account
             </p>
           </div>
 
@@ -501,6 +501,43 @@ function IconQuiz() {
         strokeLinejoin="round"
         d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
       />
+    </svg>
+  );
+}
+function IconTimetable() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
+    </svg>
+  );
+}
+function IconFlashcards() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4 8a2 2 0 012-2h9l5 5v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"
+      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 6v5h5" />
     </svg>
   );
 }
@@ -664,6 +701,16 @@ function QuickActions({ preferences = [] }) {
       label: "Documents",
     },
     quiz: { to: "/app/quiz", icon: <IconQuiz />, label: "Quiz" },
+    timetable: {
+      to: "/app/timetable",
+      icon: <IconTimetable />,
+      label: "Timetable",
+    },
+    flashcards: {
+      to: "/app/flashcards",
+      icon: <IconFlashcards />,
+      label: "Flashcards",
+    },
     counselor: {
       to: "/app/counselor",
       icon: <IconSupport />,
@@ -674,7 +721,9 @@ function QuickActions({ preferences = [] }) {
   // Tasks is always first, Support always last
   // Middle two slots filled by user preferences, fallback to journal + resources
   const preferred = preferences
-    .filter((p) => ["journal", "resources", "documents", "quiz"].includes(p))
+    .filter((p) =>
+      ["journal", "resources", "documents", "quiz", "timetable", "flashcards"].includes(p)
+    )
     .slice(0, 2);
 
   const middle =
@@ -772,7 +821,7 @@ function StreakCalendar({ userId, accountCreated }) {
     <Card>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-display font-semibold text-slate-700 text-sm">
+          <h3 className="font-display font-semibold text-slate-700 dark:text-slate-200 text-sm">
             {monthName} {year}
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -956,16 +1005,16 @@ function BreathingCard({ duration = 5 }) {
   const strokeDashoffset = circumference * (1 - phaseProgress);
 
   const ringColor = {
-    inhale: "#7C6FF7",
+    inhale: "#2960F1",
     hold: "#4ECDC4",
-    exhale: "#A090F9",
+    exhale: "#7A9CF6",
   };
 
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-display font-semibold text-slate-700 text-sm">
+          <h3 className="font-display font-semibold text-slate-700 dark:text-slate-200 text-sm">
             Guided Breathing
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
@@ -988,7 +1037,7 @@ function BreathingCard({ duration = 5 }) {
               height="40"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="#7C6FF7"
+              stroke="#2960F1"
               strokeWidth={1.5}
             >
               <path
@@ -1164,7 +1213,7 @@ function BreathingCard({ duration = 5 }) {
             </svg>
           </div>
           <div className="text-center">
-            <p className="font-display font-semibold text-slate-700 mb-1">
+            <p className="font-display font-semibold text-slate-700 dark:text-slate-200 mb-1">
               Session complete
             </p>
             <p className="text-xs text-slate-400 leading-relaxed max-w-[200px]">
@@ -1241,7 +1290,7 @@ export default function Home() {
 
       if (tasks?.length > 0) {
         new Notification("You have pending tasks", {
-          body: "Open Cerebra to stay on track.",
+          body: "Open Thala to stay on track.",
           icon: "/pwa-192x192.png",
           badge: "/favicon-32x32.png",
           tag: "task-reminder",

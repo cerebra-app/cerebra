@@ -51,8 +51,8 @@ export default function PrivacyPolicy() {
               1. Who we are
             </h2>
             <p>
-              Cerebra is a student mental health and academic productivity
-              application developed and operated by the Cerebra team. We are
+              Thala is a student mental health and academic productivity
+              application developed and operated by the Thala team. We are
               committed to protecting your privacy and handling your personal
               data with care and transparency.
             </p>
@@ -109,7 +109,7 @@ export default function PrivacyPolicy() {
             <p className="mb-2">Your data is used exclusively to:</p>
             <ul className="flex flex-col gap-1.5 pl-4">
               {[
-                "Provide and personalise the Cerebra experience",
+                "Provide and personalise the Thala experience",
                 "Sync your data across devices when you are signed in",
                 "Send transactional emails such as login links and password resets",
                 "Improve app performance and fix bugs using anonymised analytics",
@@ -140,7 +140,7 @@ export default function PrivacyPolicy() {
             <p>
               Your journal entries are private to you. They are stored securely
               in our database with row-level security — meaning no other user,
-              including Cerebra staff, can access your entries through the
+              including Thala staff, can access your entries through the
               application.
             </p>
             <p className="mt-2">
@@ -172,7 +172,7 @@ export default function PrivacyPolicy() {
               6. Third-party services
             </h2>
             <p className="mb-2">
-              Cerebra uses the following third-party services to operate:
+              Thala uses the following third-party services to operate:
             </p>
             <ul className="flex flex-col gap-1.5 pl-4">
               {[
@@ -259,7 +259,7 @@ export default function PrivacyPolicy() {
               9. Children and minors
             </h2>
             <p>
-              Cerebra is designed for university students aged 18 and above. We
+              Thala is designed for university students aged 18 and above. We
               do not knowingly collect data from users under 18. If you believe
               a minor has created an account, please contact us immediately.
             </p>
@@ -275,7 +275,7 @@ export default function PrivacyPolicy() {
             <p>
               We may update this policy as the app evolves. We will notify you
               of significant changes via email or an in-app notice. Continued
-              use of Cerebra after changes constitutes acceptance of the updated
+              use of Thala after changes constitutes acceptance of the updated
               policy.
             </p>
           </section>

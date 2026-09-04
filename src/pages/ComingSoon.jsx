@@ -79,7 +79,7 @@ export default function ComingSoon({ feature }) {
         <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
         Coming soon
       </span>
-      <h1 className="font-display text-2xl font-bold text-slate-800 mb-3">
+      <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-3">
         {info.title}
       </h1>
       <p className="text-slate-400 text-sm leading-relaxed max-w-xs mb-8">

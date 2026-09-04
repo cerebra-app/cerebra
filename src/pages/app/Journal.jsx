@@ -199,7 +199,7 @@ function PinPad({
           height="28"
           fill="none"
           viewBox="0 0 24 24"
-          stroke="#7C6FF7"
+          stroke="#2960F1"
           strokeWidth={1.8}
         >
           <path
@@ -257,8 +257,8 @@ function PinPad({
         <div />
         <button
           onClick={() => handleDigit("0")}
-          className="h-14 rounded-2xl bg-white border border-slate-100 shadow-card
-            font-display font-semibold text-xl text-slate-700
+          className="h-14 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-card
+            font-display font-semibold text-xl text-slate-700 dark:text-slate-200
             transition-all active:scale-95 active:bg-primary-50 hover:border-primary-200"
         >
           0
@@ -457,7 +457,7 @@ function WriteEntry({ entry, onSave, onDelete, onBack }) {
                 ${
                   mood === m.id
                     ? MOOD_COLORS[m.id]
-                    : "border-slate-100 bg-white text-slate-400 hover:border-primary-200"
+                    : "border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-400 hover:border-primary-200"
                 }`}
             >
               {m.icon}
@@ -668,7 +668,7 @@ export default function Journal() {
       <div className="px-5 pt-8 pb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="font-display text-xl font-bold text-slate-800">
+            <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
               Journal
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -679,7 +679,7 @@ export default function Journal() {
             {/* Lock button */}
             <button
               onClick={() => setScreen("lock")}
-              className="w-9 h-9 rounded-2xl bg-white border border-slate-100 shadow-card
+              className="w-9 h-9 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-card
                 flex items-center justify-center text-slate-400
                 hover:text-primary-400 hover:border-primary-200 transition-all"
             >

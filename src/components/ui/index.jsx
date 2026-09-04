@@ -61,7 +61,7 @@ export const Input = forwardRef(function Input(
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-600 mb-1.5">
+        <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1.5">
           {label}
         </label>
       )}
@@ -82,7 +82,7 @@ export function PasswordInput({ label, error, className = "", ...props }) {
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-600 mb-1.5">
+        <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1.5">
           {label}
         </label>
       )}
@@ -150,7 +150,7 @@ export const Textarea = forwardRef(function Textarea(
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-slate-600 mb-1.5">
+        <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1.5">
           {label}
         </label>
       )}
@@ -212,7 +212,7 @@ export function PageLoader() {
     <div className="page-container flex items-center justify-center min-h-screen">
       <div className="flex flex-col items-center gap-4 animate-fade-in">
         <Spinner size="lg" />
-        <p className="text-sm text-slate-400">Loading Cerebra…</p>
+        <p className="text-sm text-slate-400">Loading Thala…</p>
       </div>
     </div>
   );
@@ -237,7 +237,7 @@ export function EmptyState({ icon, title, description, action }) {
           {icon}
         </div>
       )}
-      <h3 className="font-display font-semibold text-slate-700 text-lg mb-2">
+      <h3 className="font-display font-semibold text-slate-700 dark:text-slate-200 text-lg mb-2">
         {title}
       </h3>
       {description && (
@@ -263,7 +263,7 @@ export function ErrorState({
       >
         ⚠️
       </div>
-      <h3 className="font-display font-semibold text-slate-700 text-lg mb-2">
+      <h3 className="font-display font-semibold text-slate-700 dark:text-slate-200 text-lg mb-2">
         {title}
       </h3>
       {description && (
@@ -324,12 +324,12 @@ export function Toggle({ checked, onChange, disabled = false }) {
 }
 
 export function Divider({ label, className = "" }) {
-  if (!label) return <hr className={`border-slate-100 ${className}`} />;
+  if (!label) return <hr className={`border-slate-100 dark:border-slate-700 ${className}`} />;
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <hr className="flex-1 border-slate-100" />
+      <hr className="flex-1 border-slate-100 dark:border-slate-700" />
       <span className="text-xs text-slate-400">{label}</span>
-      <hr className="flex-1 border-slate-100" />
+      <hr className="flex-1 border-slate-100 dark:border-slate-700" />
     </div>
   );
 }

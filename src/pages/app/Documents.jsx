@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { useApp } from "../../context/AppContext";
 import { useToast } from "../../context/ToastContext";
@@ -34,6 +35,7 @@ function formatDate(d) {
 
 // ── Document Viewer ──────────────────────────────────────────────
 function DocumentViewer({ doc, signedUrl, onBack }) {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState("reader"); // reader | original
   const [extractedText, setExtractedText] = useState("");
   const [extracting, setExtracting] = useState(true);
@@ -107,7 +109,7 @@ function DocumentViewer({ doc, signedUrl, onBack }) {
 
       {/* Doc title */}
       <div className="px-5 mb-3">
-        <h2 className="font-display font-semibold text-slate-800 text-sm leading-snug truncate">
+        <h2 className="font-display font-semibold text-slate-800 dark:text-white text-sm leading-snug truncate">
           {doc.filename}
         </h2>
         <p className="text-xs text-slate-400 mt-0.5">
@@ -180,7 +182,7 @@ function DocumentViewer({ doc, signedUrl, onBack }) {
               />
             ) : doc.file_type === "text/plain" ? (
               <pre
-                className="p-6 text-xs text-slate-700 leading-relaxed
+                className="p-6 text-xs text-slate-700 dark:text-slate-200 leading-relaxed
                 overflow-auto h-full whitespace-pre-wrap font-body"
               >
                 {extractedText}
@@ -307,7 +309,7 @@ function DocumentViewer({ doc, signedUrl, onBack }) {
                   height="16"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="#7C6FF7"
+                  stroke="#2960F1"
                   strokeWidth={2.5}
                 >
                   <path
@@ -360,47 +362,88 @@ function DocumentViewer({ doc, signedUrl, onBack }) {
                 </div>
               </div>
 
-              {/* Flashcards — coming soon */}
-              <div
-                className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50
-          border border-slate-100 opacity-60"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl bg-slate-200 flex items-center
-            justify-center text-slate-400 shrink-0"
+              {/* Flashcards */}
+              {doc.file_type === "application/pdf" ||
+              doc.file_type === "text/plain" ? (
+                <button
+                  onClick={() =>
+                    navigate("/app/flashcards", {
+                      state: { fromDocumentId: doc.id, fromDocumentName: doc.filename },
+                    })
+                  }
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-slate-800
+                    border border-slate-100 dark:border-slate-700 hover:border-primary-200 transition-all"
                 >
-                  <svg
-                    width="18"
-                    height="18"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                  <div
+                    className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-900/20 flex items-center
+                      justify-center text-primary-400 shrink-0"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1 text-left">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-slate-500">
+                    <svg
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-sm font-semibold text-slate-800 dark:text-white">
                       Generate flashcards
                     </p>
-                    <span
-                      className="text-[10px] font-medium bg-amber-100 text-amber-600
-                px-2 py-0.5 rounded-full"
-                    >
-                      Coming soon
-                    </span>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                      Study cards from this document
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Study cards from your document
-                  </p>
+                </button>
+              ) : (
+                <div
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50
+          border border-slate-100 opacity-60"
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl bg-slate-200 flex items-center
+            justify-center text-slate-400 shrink-0"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-slate-500">
+                        Generate flashcards
+                      </p>
+                      <span
+                        className="text-[10px] font-medium bg-amber-100 text-amber-600
+                px-2 py-0.5 rounded-full"
+                      >
+                        PDF/TXT only
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      DOCX isn't supported for generation yet
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </>
@@ -653,7 +696,7 @@ export default function Documents() {
     <div className="min-h-screen bg-surfacedark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
-        <h1 className="font-display text-xl font-bold text-slate-800">
+        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
           Documents
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">

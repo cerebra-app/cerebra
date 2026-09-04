@@ -50,9 +50,9 @@ export default function TermsOfUse() {
               1. Acceptance of terms
             </h2>
             <p>
-              By creating an account and using Cerebra, you agree to these Terms
+              By creating an account and using Thala, you agree to these Terms
               of Use. If you do not agree, please do not use the application.
-              These terms apply to all users of the Cerebra web application.
+              These terms apply to all users of the Thala web application.
             </p>
           </section>
 
@@ -61,10 +61,10 @@ export default function TermsOfUse() {
               className="font-display font-semibold text-slate-800 dark:text-white
               text-base mb-2"
             >
-              2. Who can use Cerebra
+              2. Who can use Thala
             </h2>
             <p>
-              Cerebra is intended for university students aged 18 and above. By
+              Thala is intended for university students aged 18 and above. By
               signing up, you confirm that you meet this requirement. We reserve
               the right to terminate accounts that do not meet eligibility
               criteria.
@@ -107,7 +107,7 @@ export default function TermsOfUse() {
             <p className="mb-2">You agree not to:</p>
             <ul className="flex flex-col gap-1.5 pl-4">
               {[
-                "Use Cerebra for any unlawful purpose",
+                "Use Thala for any unlawful purpose",
                 "Upload documents or content that infringes intellectual property rights",
                 "Attempt to gain unauthorised access to other users' data",
                 "Use the app to harass, threaten, or harm others",
@@ -133,7 +133,7 @@ export default function TermsOfUse() {
               5. Mental health disclaimer
             </h2>
             <p>
-              Cerebra is a productivity and wellbeing tool, not a medical or
+              Thala is a productivity and wellbeing tool, not a medical or
               clinical service. The breathing exercises, mindfulness features,
               and motivational content are designed to support general student
               wellbeing and are not a substitute for professional mental health
@@ -160,7 +160,7 @@ export default function TermsOfUse() {
             </h2>
             <p>
               The counselor booking feature connects students with independent
-              mental health professionals. Cerebra does not employ these
+              mental health professionals. Thala does not employ these
               professionals and is not responsible for the quality, outcomes, or
               content of counseling sessions. Any therapeutic relationship is
               solely between you and the counselor.
@@ -175,7 +175,7 @@ export default function TermsOfUse() {
               7. User content
             </h2>
             <p>
-              You own all content you create in Cerebra — your journal entries,
+              You own all content you create in Thala — your journal entries,
               tasks, and uploaded documents. By using the app, you grant us a
               limited licence to store and process this content solely for the
               purpose of providing the service to you. We do not use your
@@ -191,8 +191,8 @@ export default function TermsOfUse() {
               8. Intellectual property
             </h2>
             <p>
-              The Cerebra name, logo, design, and application code are the
-              intellectual property of the Cerebra team. You may not reproduce,
+              The Thala name, logo, design, and application code are the
+              intellectual property of the Thala team. You may not reproduce,
               distribute, or create derivative works without our explicit
               written permission.
             </p>
@@ -221,7 +221,7 @@ export default function TermsOfUse() {
               10. Limitation of liability
             </h2>
             <p>
-              Cerebra is provided as-is. To the fullest extent permitted by law,
+              Thala is provided as-is. To the fullest extent permitted by law,
               we are not liable for any indirect, incidental, or consequential
               damages arising from your use of the application, including loss
               of data.

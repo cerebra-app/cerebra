@@ -51,7 +51,7 @@ self.addEventListener("push", (event) => {
     vibrate: [100, 50, 100],
     data: { type: data.type, url: data.url },
     actions: data.actions || [],
-    tag: data.tag || "cerebra-notification",
+    tag: data.tag || "thala-notification",
     renotify: true,
   };
 

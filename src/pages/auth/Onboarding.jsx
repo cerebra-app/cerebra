@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { useToast } from "../../context/ToastContext";
 import { Button, Input } from "../../components/ui/index";
-import { CerebraIcon } from "../../components/ui/Logo";
+import { ThalaIcon } from "../../components/ui/Logo";
 
 const STEPS = ["welcome", "university", "features"];
 
@@ -129,6 +129,47 @@ const FEATURE_OPTIONS = [
       </svg>
     ),
   },
+  {
+    id: "timetable",
+    label: "Timetable planner",
+    icon: (
+      <svg
+        width="18"
+        height="18"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.8}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+  },
+  {
+    id: "flashcards",
+    label: "Flashcards",
+    icon: (
+      <svg
+        width="18"
+        height="18"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.8}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4 8a2 2 0 012-2h9l5 5v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"
+        />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 6v5h5" />
+      </svg>
+    ),
+  },
 ];
 
 export default function Onboarding() {
@@ -239,10 +280,10 @@ export default function Onboarding() {
       {step === 0 && (
         <div className="flex-1 flex flex-col animate-slide-up">
           <div className="flex justify-center mb-8">
-            <CerebraIcon size={64} />
+            <ThalaIcon size={64} />
           </div>
           <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-2 text-center">
-            Welcome to Cerebra 👋
+            Welcome to Thala 👋
           </h1>
           <p className="text-slate-400 dark:text-slate-500 text-sm text-center leading-relaxed mb-10">
             Let's get your space set up. This takes about 30 seconds.

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CerebraLockup } from "../components/ui/Logo";
+import { ThalaLockup } from "../components/ui/Logo";
 import { Button } from "../components/ui/index";
 import { useEffect, useState } from "react";
 
@@ -95,7 +95,7 @@ function ThemeToggle() {
     const isDark = !dark;
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
-    localStorage.setItem("cerebra_theme", isDark ? "dark" : "light");
+    localStorage.setItem("thala_theme", isDark ? "dark" : "light");
   };
 
   return (
@@ -144,7 +144,7 @@ export default function Landing() {
   return (
     <div className="page-container overflow-y-auto scrollbar-hide">
       <header className="flex items-center justify-between px-6 py-5">
-        <CerebraLockup height={32} />
+        <ThalaLockup height={32} />
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Link to="/login">
@@ -163,13 +163,13 @@ export default function Landing() {
           <span className="w-1.5 h-1.5 rounded-full bg-primary-400 animate-pulse-soft" />
           Built for students
         </div>
-        <h1 className="font-display text-4xl font-bold text-slate-800 leading-tight mb-4">
+        <h1 className="font-display text-4xl font-bold text-slate-800 dark:text-white leading-tight mb-4">
           Your mind,
           <br />
           <span className="text-primary-400">balanced.</span>
         </h1>
         <p className="text-slate-500 text-base leading-relaxed max-w-xs mx-auto mb-8">
-          Cerebra helps you manage your academic life, mental wellbeing, and
+          Thala helps you manage your academic life, mental wellbeing, and
           daily habits, all in one calm space.
         </p>
         <div className="flex flex-col gap-3 max-w-xs mx-auto">
@@ -186,7 +186,7 @@ export default function Landing() {
       </section>
 
       <section className="px-6 pb-16">
-        <h2 className="font-display text-lg font-semibold text-slate-700 text-center mb-6">
+        <h2 className="font-display text-lg font-semibold text-slate-700 dark:text-slate-200 text-center mb-6">
           Everything you need, nothing you don't
         </h2>
         <div className="grid grid-cols-2 gap-3">

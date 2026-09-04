@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { CerebraLockup } from "../../components/ui/Logo";
+import { ThalaLockup } from "../../components/ui/Logo";
 import { Button } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
@@ -26,9 +26,9 @@ export default function VerifyEmail() {
 
   return (
     <div className="page-container full-height flex flex-col items-center justify-center px-6 text-center overflow-y-auto page-enter">
-      <CerebraLockup height={36} className="mb-10" />
+      <ThalaLockup height={36} className="mb-10" />
       <div className="text-5xl mb-6">✉️</div>
-      <h1 className="font-display text-2xl font-bold text-slate-800 mb-3">
+      <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-3">
         Check your email
       </h1>
       <p className="text-slate-400 text-sm leading-relaxed max-w-xs mb-8">

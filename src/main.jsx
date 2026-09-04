@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 
 // Apply saved theme before render
-const saved = localStorage.getItem("cerebra_theme");
+const saved = localStorage.getItem("thala_theme");
 if (saved === "dark") {
   document.documentElement.classList.add("dark");
 } else if (saved === "light") {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import { CerebraLockup } from "../../components/ui/Logo";
+import { ThalaLockup } from "../../components/ui/Logo";
 import { Button, Input, PasswordInput } from "../../components/ui/index";
 import { useToast } from "../../context/ToastContext";
 
@@ -106,12 +106,12 @@ export default function Signup() {
         </Link>
       </div>
       <div className="flex-1 flex flex-col animate-slide-up">
-        <CerebraLockup height={36} className="mb-8" />
-        <h1 className="font-display text-2xl font-bold text-slate-800 mb-1">
+        <ThalaLockup height={36} className="mb-8" />
+        <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-1">
           Create your account
         </h1>
         <p className="text-slate-400 text-sm mb-8">
-          Join thousands of students on Cerebra
+          Join thousands of students on Thala
         </p>
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <Input
