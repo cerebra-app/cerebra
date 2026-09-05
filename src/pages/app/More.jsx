@@ -85,9 +85,7 @@ export default function More() {
     <div className="min-h-screen bg-surfacedark:bg-slate-900 page-enter">
       {/* Header */}
       <div className="px-5 pt-8 pb-4">
-        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">
-          More
-        </h1>
+        <h1 className="font-display text-xl font-bold text-slate-800 dark:text-white">More</h1>
       </div>
 
       {/* Profile card */}
@@ -211,7 +209,6 @@ export default function More() {
         <MoreRow
           to="/app/quiz"
           label="AI quiz generator"
-          badge="Coming soon"
           icon={
             <svg
               width="18"
@@ -253,65 +250,14 @@ export default function More() {
       </div>
 
       {/* Support */}
-      {/* <div
-        className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mb-3 overflow-hidden 
-  border border-slate-100 dark:border-slate-700 shadow-card"
-      >
-        <SectionLabel label="Support" />
-        <MoreRow
-          to="/app/peer-chat"
-          label="Peer support chat"
-          badge="Coming soon"
-          icon={
-            <svg
-              width="18"
-              height="18"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.8}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
-              />
-            </svg>
-          }
-        />
-        <Divider />
-        <MoreRow
-          to="/app/counselor"
-          label="Book a counselor"
-          badge="Coming soon"
-          icon={
-            <svg
-              width="18"
-              height="18"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.8}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          }
-        />
-      </div> */}
-
       <div
         className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mb-3 overflow-hidden 
   border border-slate-100 dark:border-slate-700 shadow-card"
       >
         <SectionLabel label="Support" />
         <MoreRow
-          to="/app/peer-chat"
-          label="Study buddy"
-          badge="Coming soon"
+          to="/app/study-buddy"
+          label="Study Buddy"
           icon={
             <svg
               width="18"
@@ -332,8 +278,7 @@ export default function More() {
         <Divider />
         <MoreRow
           to="/app/counselor"
-          label="Book a counselor"
-          badge="Coming soon"
+          label="Support"
           icon={
             <svg
               width="18"

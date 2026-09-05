@@ -393,6 +393,30 @@ export default function Settings() {
         </div>
       </div>
 
+      {/* Privacy */}
+      <div className="bg-white dark:bg-slate-800 rounded-3xl mx-5 mt-3 overflow-hidden border border-slate-100 dark:border-slate-700 shadow-card">
+        <SectionLabel label="Privacy" />
+        <div className="px-5 pb-4">
+          <div className="flex items-center justify-between">
+            <div className="pr-4">
+              <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                Hide university in Study Buddy
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Other members won't see your university when they tap your avatar
+              </p>
+            </div>
+            <Toggle
+              checked={!!profile?.hide_university}
+              onChange={async (checked) => {
+                const { error } = await updateProfile({ hide_university: checked });
+                if (error) toast("Could not update privacy setting", "error");
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Appearance */}
       <div
         ref={appearanceRef}

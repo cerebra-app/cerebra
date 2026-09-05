@@ -28,7 +28,7 @@ const featureInfo = {
   },
   "peer-chat": {
     emoji: "💬",
-    title: "Study Buddy",
+    title: "Peer Support Chat",
     desc: "Connect anonymously with other students who understand what you're going through.",
   },
   counselor: {

@@ -8,6 +8,7 @@
 //   GEMINI_API_KEY
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { encodeBase64 } from "jsr:@std/encoding/base64";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -142,9 +143,7 @@ Deno.serve(async (req) => {
 
       if (doc.file_type === "application/pdf") {
         const bytes = new Uint8Array(await fileBlob.arrayBuffer());
-        let binary = "";
-        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-        const base64 = btoa(binary);
+        const base64 = encodeBase64(bytes);
         parts.push({ inline_data: { mime_type: "application/pdf", data: base64 } });
       } else {
         const text = await fileBlob.text();
@@ -157,7 +156,7 @@ Deno.serve(async (req) => {
     const schema = output_type === "flashcards" ? FLASHCARD_SCHEMA : QUIZ_SCHEMA;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -173,16 +172,26 @@ Deno.serve(async (req) => {
 
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
-      const status = geminiRes.status === 429 ? 429 : 502;
-      const message =
-        geminiRes.status === 429
-          ? "Rate limit reached — wait a minute and try again."
-          : "Gemini request failed.";
       console.error("Gemini error:", errText);
-      return new Response(JSON.stringify({ error: message }), {
-        status,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      if (geminiRes.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "Rate limit reached — wait a minute and try again." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      // Surface the real Gemini error text rather than a generic message —
+      // this is what actually tells us what's wrong (bad model name, bad key, bad request shape, etc.)
+      let detail = errText;
+      try {
+        const parsed = JSON.parse(errText);
+        detail = parsed?.error?.message || errText;
+      } catch {
+        // errText wasn't JSON, use it raw
+      }
+      return new Response(
+        JSON.stringify({ error: `Gemini request failed: ${detail}` }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     const geminiData = await geminiRes.json();

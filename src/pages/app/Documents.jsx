@@ -320,47 +320,88 @@ function DocumentViewer({ doc, signedUrl, onBack }) {
                 </svg>
               </button>
 
-              {/* Quiz — coming soon */}
-              <div
-                className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50
-  border border-slate-100 dark:border-slate-700 opacity-60"
-              >
-                <div
-                  className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-600 flex items-center
-    justify-center text-slate-400 dark:text-slate-500 shrink-0"
+              {/* Quiz */}
+              {doc.file_type === "application/pdf" ||
+              doc.file_type === "text/plain" ? (
+                <button
+                  onClick={() =>
+                    navigate("/app/quiz", {
+                      state: { fromDocumentId: doc.id, fromDocumentName: doc.filename },
+                    })
+                  }
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-slate-800
+                    border border-slate-100 dark:border-slate-700 hover:border-primary-200 transition-all"
                 >
-                  <svg
-                    width="18"
-                    height="18"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                  <div
+                    className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-900/20 flex items-center
+                      justify-center text-primary-400 shrink-0"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1 text-left">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                    <svg
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-sm font-semibold text-slate-800 dark:text-white">
                       Generate quiz
                     </p>
-                    <span
-                      className="text-[10px] font-medium bg-amber-100 text-amber-600
-                px-2 py-0.5 rounded-full"
-                    >
-                      Coming soon
-                    </span>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                      AI-powered from this document
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                    AI-powered from your document
-                  </p>
+                </button>
+              ) : (
+                <div
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50
+  border border-slate-100 dark:border-slate-700 opacity-60"
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-600 flex items-center
+    justify-center text-slate-400 dark:text-slate-500 shrink-0"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1 text-left">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+                        Generate quiz
+                      </p>
+                      <span
+                        className="text-[10px] font-medium bg-amber-100 text-amber-600
+                px-2 py-0.5 rounded-full"
+                      >
+                        PDF/TXT only
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                      DOCX isn't supported for generation yet
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Flashcards */}
               {doc.file_type === "application/pdf" ||

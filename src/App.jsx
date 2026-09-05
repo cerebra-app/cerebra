@@ -24,12 +24,14 @@ const Tasks = lazy(() => import("./pages/app/Tasks"));
 const Journal = lazy(() => import("./pages/app/Journal"));
 const More = lazy(() => import("./pages/app/More"));
 const Settings = lazy(() => import("./pages/app/Settings"));
-const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Resources = lazy(() => import("./pages/app/Resources"));
 const Documents = lazy(() => import("./pages/app/Documents"));
 const Timetable = lazy(() => import("./pages/app/Timetable"));
 const Flashcards = lazy(() => import("./pages/app/Flashcards"));
+const Counselor = lazy(() => import("./pages/app/Counselor"));
+const Quiz = lazy(() => import("./pages/app/Quiz"));
+const StudyBuddy = lazy(() => import("./pages/app/StudyBuddy"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
 
@@ -122,19 +124,13 @@ function AppRoutes() {
                   <Route path="resources" element={<Resources />} />
                   <Route path="documents" element={<Documents />} />
                   <Route path="timetable" element={<Timetable />} />
-                  <Route path="quiz" element={<ComingSoon feature="quiz" />} />
+                  <Route path="quiz" element={<Quiz />} />
                   <Route
                     path="flashcards"
                     element={<Flashcards />}
                   />
-                  <Route
-                    path="peer-chat"
-                    element={<ComingSoon feature="peer-chat" />}
-                  />
-                  <Route
-                    path="counselor"
-                    element={<ComingSoon feature="counselor" />}
-                  />
+                  <Route path="study-buddy" element={<StudyBuddy />} />
+                  <Route path="counselor" element={<Counselor />} />
                 </Routes>
               </AppLayout>
             </AuthGuard>
